@@ -18,7 +18,7 @@ class Auth{
           email: email,
           password: password
       );
-    } on FirebaseAuthException catch(e){
+    } on FirebaseAuthException {
       rethrow;
     }
   }

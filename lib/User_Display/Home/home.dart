@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
   final int index;
 
   // Constructor with a default value for index if null
-  Home({super.key, this.index = 0});
+  const Home({super.key, this.index = 0});
 
   @override
   State<Home> createState() => _HomeState();

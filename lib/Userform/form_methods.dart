@@ -16,14 +16,17 @@ Widget getTextFormField({
   readOnly,
   hideText,
   suffixIcon,
-  focusNode
+  focusNode,
+  onChanged
 }){
   return StatefulBuilder(
     builder: (context,setState){
       return TextFormField(
         controller: controller,
         focusNode: focusNode,
+        
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(20),
           labelText: label,
           errorText: errorMsg,
           border: OutlineInputBorder(
@@ -32,15 +35,18 @@ Widget getTextFormField({
           ),
           fillColor: Colors.white,
           filled: true,
-          prefixIcon: Icon(icon),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Icon(icon,size: 25,),
+          ),
           suffixIcon: suffixIcon,
         ),
 
-        keyboardType: keyboardType!=null ? keyboardType : null,
+        keyboardType: keyboardType,
 
         textCapitalization: TextCapitalization.words,
 
-        inputFormatters:inputFormator!=null?inputFormator:[],
+        inputFormatters:inputFormator ?? [],
 
         validator: (value) {
           return validateFun!(value);
@@ -50,8 +56,11 @@ Widget getTextFormField({
           setState(() {
             errorMsg = validateFun!(value);
           });
+          if(onChanged!=null){
+            onChanged();
+          }
         },
-        obscureText: hideText!=null ?hideText:false,
+        obscureText: hideText ?? false,
 
         readOnly: readOnly!=null?true:false,
         onTap: onTap,

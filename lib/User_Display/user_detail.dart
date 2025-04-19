@@ -5,7 +5,7 @@ import '../Utils/importFiles.dart'; // Ensure this file defines your constants
 
 class UserDetail extends StatefulWidget {
   final Map<String, dynamic> data;
-  const UserDetail({Key? key, required this.data}) : super(key: key);
+  const UserDetail({super.key, required this.data});
 
   @override
   State<UserDetail> createState() => _UserDetailState();

@@ -134,7 +134,7 @@ class _LaunchPageState extends State<LaunchPage> {
             textAlign: TextAlign.center,
           ),
         ),
-        Container(
+        SizedBox(
           height: 40,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

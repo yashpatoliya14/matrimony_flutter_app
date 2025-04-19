@@ -8,7 +8,7 @@ import '../Utils/crud_operation.dart';
 
 class Favoritelist extends StatefulWidget {
 
-  Favoritelist({super.key});
+  const Favoritelist({super.key});
 
   @override
   State<Favoritelist> createState() => _UserListState();
@@ -34,11 +34,11 @@ class _UserListState extends State<Favoritelist> {
         favoriteList.clear();
     }
     favoriteList.clear();
-    userList.forEach((user) {
+    for (var user in userList) {
       if (user[ISFAVORITE]) {
         favoriteList.add(user);
       }
-    });
+    }
 
 
     return favoriteList;
@@ -142,7 +142,7 @@ class _UserListState extends State<Favoritelist> {
                       //fullname
                       Row(
                         children: [
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width * 0.59,
                             child: Text(
                               currentList[index][FULLNAME],
@@ -169,7 +169,7 @@ class _UserListState extends State<Favoritelist> {
 
                           const Icon(Icons.email_outlined, size: 20),
                           const SizedBox(width: 5),
-                          Container(
+                          SizedBox(
                             width: 100, // Adjust this width as needed
                             child: Text(
                               currentList[index][EMAIL],
@@ -210,7 +210,7 @@ class _UserListState extends State<Favoritelist> {
                                 color: Colors.red,
                               ),
                               style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+                                padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
                               ),
                             ),
                           ),

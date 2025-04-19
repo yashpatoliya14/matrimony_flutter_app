@@ -87,22 +87,30 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: Column(
             children: [
+
+              //logo
               Image.asset("assets/login_signup_tree1.png", width: 100),
               SizedBox(height: 50),
+
+              //Sign in / up to continue
               Text(
-                (isNewUser ? "Sign Up" : "Sign In") + " to continue",
+                "${isNewUser ? "Sign Up" : "Sign In"} to continue",
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                 ),
               ),
               SizedBox(height: 20),
+
+              //continue with email button
               buildButton(
                 label: "Continue with email",
                 textColor: Colors.white,
                 backgroundColor: Colors.purple,
               ),
               SizedBox(height: 20),
+
+              ////continue with phone number
               buildButton(
                 label: "Use phone number",
                 textColor: Colors.purple,
@@ -110,6 +118,8 @@ class _LoginPageState extends State<LoginPage> {
                 borderColor: Colors.black,
               ),
               SizedBox(height: 20),
+
+              //divider ------------------------pending to seperate component
               Row(
                 children: [
                   Expanded(
@@ -134,12 +144,22 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               SizedBox(height: 20),
+
+
+              // google button
               buildButton(
-                label: "Sign up with Google",
+                label: isNewUser ? "Sign up with Google" : "Sign in with Google", 
                 textColor: Colors.black,
                 backgroundColor: Colors.white30,
-                icon: Image.asset("assets/google_image.jpg"),
+                icon: Image.asset("assets/google_image.jpg",height: 20,),
                 borderColor: Colors.black,
+                onPressed: () async {
+                  try{
+                    await Auth().signInWithGoogle();
+                  }catch(err){
+                      print(err);
+                  }
+                }
               ),
             ],
           ),

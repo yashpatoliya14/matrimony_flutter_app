@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shimmer/shimmer.dart';
 class LoadingWidget extends StatefulWidget {
+  const LoadingWidget({super.key});
+
   @override
   _LoadingWidgetState createState() => _LoadingWidgetState();
 }

@@ -108,7 +108,7 @@ class _UserListState extends State<UserList> {
     super.initState();
   }
 
-  Future<List<Map<String, dynamic>>> _getUserData({fetch}) async {
+  Future<List<Map<String, dynamic>>> _getUserData() async {
     if (userList.isEmpty || selectedCity != null || selectedGender != null ) {
       userList = await widget.user.getUserList();
       userList = userList.reversed.toList();

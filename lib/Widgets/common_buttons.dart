@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget buildButton({
@@ -7,28 +6,22 @@ Widget buildButton({
   required backgroundColor,
   borderColor,
   icon,
+  onPressed
 }) {
-  return Container(
-    height: 50,
-    padding: EdgeInsets.symmetric(horizontal: 70),
-    margin: EdgeInsets.symmetric(vertical: 5),
-    decoration: BoxDecoration(
-      color: backgroundColor ?? Colors.purple,
-      borderRadius: BorderRadius.circular(50),
-
-      border:borderColor!=null ?  Border.symmetric(vertical: BorderSide(color: borderColor,width: 0.5),horizontal: BorderSide(color: borderColor,width: 0.5)):null
-    ),
-    child: TextButton.icon(
-      onPressed: () {},
-      style: TextButton.styleFrom(splashFactory: NoSplash.splashFactory),
-      label: Text(
-        label,
-        style: TextStyle(color: textColor,fontWeight: FontWeight.w600),
-        textAlign: TextAlign.center,
+  return OutlinedButton.icon(
+    onPressed: onPressed,
+    label: Text(label,style: TextStyle(color: textColor),),
+    icon: icon,
+    
+    style: OutlinedButton.styleFrom(
+      backgroundColor: backgroundColor,
+      
+      side: BorderSide(color: borderColor ?? Colors.black12),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      
       ),
-      icon: icon,
+      padding: EdgeInsets.symmetric(vertical: 15,horizontal: 70)
     ),
   );
 }
-
-

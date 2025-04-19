@@ -13,7 +13,7 @@ import './user_form.dart';
 class UserForm extends StatefulWidget {
   bool isAppBar;
   Map<String, dynamic>? userDetail;
-  UserForm({super.key, Map<String, dynamic>? userDetail,required bool this.isAppBar}) {
+  UserForm({super.key, Map<String, dynamic>? userDetail,required this.isAppBar}) {
     this.userDetail = userDetail;
   }
   @override
@@ -104,7 +104,7 @@ class _UserformState extends State<UserForm> {
           child: Form(
             key: _formkey,
 
-            child: Container(
+            child: SizedBox(
               width: screenWidth,
               height: screenHeight,
 
@@ -481,7 +481,9 @@ class _UserformState extends State<UserForm> {
                               dobController.clear();
                               selectedRadio = null;
                               selectedCity = cities[0];
-                              hobbiesData.forEach((hobby) => hobby["isChecked"] = false);
+                              for (var hobby in hobbiesData) {
+                                hobby["isChecked"] = false;
+                              }
                             });
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(

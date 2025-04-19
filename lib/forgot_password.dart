@@ -21,11 +21,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     } on FirebaseException catch(e){
       Get.snackbar("Error", e.message.toString());
     }catch (e){
-      print(':::::${e}::::');
+      print(':::::$e::::');
     }
   }
     TextEditingController controllerEmail = TextEditingController();
-    GlobalKey<FormState> _formkeyForForgot = GlobalKey();
+    final GlobalKey<FormState> _formkeyForForgot = GlobalKey();
 
   @override
   Widget build(BuildContext context) {

@@ -70,7 +70,7 @@ Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,upd
                     children: [
                       Row(
                         children: [
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width * 0.59,
                             child: Text(
 
@@ -96,7 +96,7 @@ Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,upd
 
                           const Icon(Icons.email_outlined, size: 20),
                           const SizedBox(width: 5),
-                          Container(
+                          SizedBox(
                             width: 100, // Adjust this width as needed
                             child: Text(
                               currentList[index][EMAIL],
@@ -140,7 +140,7 @@ Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,upd
                               icon: Icon((searchController.text.isEmpty ? userList[index][ISFAVORITE] : searchList[index][ISFAVORITE])? Icons.favorite : Icons.favorite_outline,
                                   size: 20, color: (searchController.text.isEmpty ? userList[index][ISFAVORITE] : searchList[index][ISFAVORITE])? Colors.red : Colors.deepOrange),
                               style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                padding: WidgetStateProperty.all<EdgeInsets>(
                                     EdgeInsets.zero),
                               ),
                             ),
@@ -160,9 +160,9 @@ Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,upd
                                     fontSize: 12, color: Colors.white),
                               ),
                               style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                padding: WidgetStateProperty.all<EdgeInsets>(
                                     EdgeInsets.zero),
-                                backgroundColor: MaterialStateProperty.all<Color>(
+                                backgroundColor: WidgetStateProperty.all<Color>(
                                     Colors.purple.shade300),
                               ),
                             ),
@@ -206,8 +206,8 @@ Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,upd
                                 style: GoogleFonts.nunito(fontSize: 12, color: Colors.black45),
                               ),
                               style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero),
-                                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+                                backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
                               ),
                             ),
                           )

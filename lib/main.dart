@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:matrimony_flutter/Authentication/widget_tree.dart';
+import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/email.dart';
+import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/phone_number.dart';
 import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+      color: Colors.white,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -33,9 +35,9 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      home: WidgetTree(),
+      home: Email(),
     );
   }
 }

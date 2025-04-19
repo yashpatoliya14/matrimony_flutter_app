@@ -370,6 +370,7 @@ class User {
       print("Error : ");
       print(error);
     }
+    return null;
   }
 }
 
