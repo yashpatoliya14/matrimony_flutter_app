@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
+import 'package:matrimony_flutter/Userform/name_profilephoto.dart';
 import 'package:matrimony_flutter/Widgets/common_buttons.dart';
+
 class LaunchPage extends StatefulWidget {
   const LaunchPage({super.key});
 
@@ -34,17 +36,10 @@ class _LaunchPageState extends State<LaunchPage> {
     },
   ];
 
-  signInWithGoogle() async {
-    await Auth().signInWithGoogle();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(10,40),
-        child: AppBar(),
-      ),
+      appBar: PreferredSize(preferredSize: Size(10, 40), child: AppBar()),
       body: Column(
         children: [
           CarouselSlider(
@@ -85,15 +80,34 @@ class _LaunchPageState extends State<LaunchPage> {
                 }).toList(),
           ),
           _buildCarouselSliderIndicatorAndContents(),
-          buildButton(label: "Create an account",textColor: Colors.white,backgroundColor: Colors.purple),
+          buildButton(
+            label: "Create an account",
+            textColor: Colors.white,
+            backgroundColor: Colors.purple,
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>NameProfilephoto()));
+            }
+          ),
 
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("Already have an account?"),
-              TextButton(onPressed:(){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
-              },child: Text("Sign In",style: GoogleFonts.nunitoSans(color: Colors.purple,fontWeight: FontWeight.w700),)),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+                child: Text(
+                  "Sign In",
+                  style: GoogleFonts.nunitoSans(
+                    color: Colors.purple,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
             ],
           ),
         ],
@@ -103,15 +117,14 @@ class _LaunchPageState extends State<LaunchPage> {
 
   Widget _buildCarouselSliderIndicatorAndContents() {
     return Column(
-
       children: [
         AnimatedContainer(
-          height:60,
+          height: 60,
           alignment: Alignment.center,
           duration: Duration(milliseconds: 100),
           child: AnimatedSwitcher(
             duration: Duration(milliseconds: 100),
-            transitionBuilder: ( child , animation) {
+            transitionBuilder: (child, animation) {
               return FadeTransition(opacity: animation, child: child);
             },
             child: Text(
@@ -148,34 +161,13 @@ class _LaunchPageState extends State<LaunchPage> {
                   decoration: BoxDecoration(
                     color: i == _currentPage ? Colors.purple : Colors.grey,
                     shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(20)
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
             ],
           ),
         ),
-
       ],
-
-    );
-  }
- 
-  Widget _buildGoogleButton(){
-    return Container(
-      height: 40,
-      margin: EdgeInsets.symmetric(vertical: 5),
-      padding: EdgeInsets.symmetric(horizontal: 30),
-
-      decoration: BoxDecoration(
-          borderRadius:BorderRadius.circular(50),
-          border: Border.all(color: Colors.black)
-      ),
-      child: TextButton.icon(
-          onPressed: (){
-            signInWithGoogle();
-          },
-          label: Text("Continue with Google"),
-          icon: Icon(FontAwesomeIcons.google)),
     );
   }
 }

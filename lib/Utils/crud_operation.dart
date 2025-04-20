@@ -1,8 +1,6 @@
-import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
-import 'package:flutter/cupertino.dart';
 import './standard.dart';
 
 class User {

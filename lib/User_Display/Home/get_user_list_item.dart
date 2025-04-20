@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:matrimony_flutter/User_Display/user_detail.dart';
-import 'package:matrimony_flutter/Userform/user_form.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 
 import './search_bar.dart';

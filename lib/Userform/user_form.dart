@@ -1,15 +1,10 @@
-import 'package:flutter/cupertino.dart';
-import 'package:matrimony_flutter/User_Display/Home/about_page.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:matrimony_flutter/User_Display/Home/home.dart';
 import 'package:matrimony_flutter/User_Display/app_bar.dart';
-import 'package:matrimony_flutter/User_Display/dialog_box.dart';
 import 'package:matrimony_flutter/Userform/form_methods.dart';
 import '../Utils/importFiles.dart';
 import 'package:intl/intl.dart';
 import './form_utils.dart';
-import './user_form.dart';
 class UserForm extends StatefulWidget {
   bool isAppBar;
   Map<String, dynamic>? userDetail;
@@ -113,17 +108,7 @@ class _UserformState extends State<UserForm> {
                 children: [
 
                   //fullname
-                  Container(
-                    width: screenWidth * 0.9,
-                    margin: EdgeInsets.all(screenWidth * 0.025),
-                    child: getTextFormField(
-                      controller: fullnameController,
-                      label: 'Full Name',
-                      errorMsg: firstNameError,
-                      icon: Iconsax.user,
-                      validateFun: validateFirstName,
-                    ),
-                  ),
+                  
 
                   //Email
                   Container(

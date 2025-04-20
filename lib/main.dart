@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/email.dart';
-import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/phone_number.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:matrimony_flutter/launch_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      home: Email(),
+      home: LaunchPage(),
     );
   }
 }

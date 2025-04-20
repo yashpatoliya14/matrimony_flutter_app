@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
 import 'package:matrimony_flutter/User_Display/app_bar.dart';
 import 'package:matrimony_flutter/Userform/form_methods.dart';
 import 'package:matrimony_flutter/Userform/form_utils.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
 
@@ -14,16 +15,7 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  Future<void> resetPassword(email)
-  async {
-    try{
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-    } on FirebaseException catch(e){
-      Get.snackbar("Error", e.message.toString());
-    }catch (e){
-      print(':::::$e::::');
-    }
-  }
+  
     TextEditingController controllerEmail = TextEditingController();
     final GlobalKey<FormState> _formkeyForForgot = GlobalKey();
 
@@ -56,9 +48,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   width: 20,
                   height: 20,
                 ),
-                ElevatedButton(onPressed: (){
+                ElevatedButton(onPressed: () async {
+                    
                     if(_formkeyForForgot.currentState!.validate()){
-                      resetPassword(controllerEmail.text);
+                      
                     }
                 }, child: Text("Reset"))
               ],

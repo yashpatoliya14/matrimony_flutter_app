@@ -12,24 +12,28 @@ class VerifyEmailAddress extends StatefulWidget {
 }
 
 class _VerifyEmailAddressState extends State<VerifyEmailAddress> {
-  
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+
     sendForVerifyEmail();
   }
-  
+
   Future<void> sendForVerifyEmail() async {
-    await FirebaseAuth.instance.currentUser!.sendEmailVerification().then((value){
-        SnackBar(content: Text("Successful"));
+    await FirebaseAuth.instance.currentUser!.sendEmailVerification().then((
+      value,
+    ) {
+      SnackBar(content: Text("Successful"));
     });
   }
 
-  void reload(){
-    FirebaseAuth.instance.currentUser!.reload().then((value){
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>WidgetTree()));
+  void reload() {
+    FirebaseAuth.instance.currentUser!.reload().then((value) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => WidgetTree()),
+      );
     });
   }
 
@@ -44,15 +48,14 @@ class _VerifyEmailAddressState extends State<VerifyEmailAddress> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Text("sent successful")
-          ],  
-        ),
+        child: Column(children: [Text("sent successful")]),
       ),
-      floatingActionButton: IconButton(onPressed: (){
-        reload();
-      },icon: Icon(Iconsax.refresh),),
+      floatingActionButton: IconButton(
+        onPressed: () {
+          reload();
+        },
+        icon: Icon(Iconsax.refresh),
+      ),
     );
   }
 }

@@ -1,12 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:matrimony_flutter/User_Display/loader.dart';
-import 'package:matrimony_flutter/User_Display/user_detail.dart';
-import 'package:matrimony_flutter/Userform/form_utils.dart';
 import 'package:matrimony_flutter/Userform/user_form.dart';
 import 'package:matrimony_flutter/Utils/standard.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utils/crud_operation.dart';
 import './search_bar.dart';
 import '../app_bar.dart';

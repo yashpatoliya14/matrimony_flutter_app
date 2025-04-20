@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
 
 int activeIndex = 0;
 bool isSearchBar = false;
@@ -15,6 +16,14 @@ Widget getAppBar(context, {onClickSearchBar,name,actionsList}){
           begin: Alignment.topRight,
           end: Alignment.bottomRight,
         ),
+      ),
+    ),
+    leading: Builder(
+      builder: (context) => IconButton(
+        icon: Icon(FontAwesomeIcons.stream,color: Colors.white70,), // <-- Change this to any icon you want
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },
       ),
     ),
     shape: const RoundedRectangleBorder(

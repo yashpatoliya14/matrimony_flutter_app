@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/email.dart';
 import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
 import 'package:matrimony_flutter/Widgets/common_buttons.dart';
 export 'package:get/get.dart';
@@ -16,38 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
 
-  Future<void> signIn() async {
-    try {
-      await Auth().signIn(
-        email: _controllerEmail.text,
-        password: _controllerPassword.text,
-      );
-    } on FirebaseAuthException catch (e) {
-      String err = '';
-      switch (e.code) {
-        case 'user-not-found':
-          err = 'Email Address doesn\'t exist! Try Again!';
-          break;
-        case 'wrong-password':
-          err = 'Password is incorrect';
-          break;
-        case 'invalid-email':
-          err = "The email address is not valid.";
-          break;
-        case 'user-disabled':
-          err = "This user account has been disabled.";
-          break;
-        case 'invalid-credential':
-          err = 'Invalid email or password';
-          break;
-        default:
-          err = "An unknown error occurred. Please try again.";
-      }
-      Get.snackbar("Error", err);
-    } catch (e) {
-      print("Error: $e");
-    }
-  }
+  
 
   Future<void> signUp() async {
     try {
@@ -107,6 +77,9 @@ class _LoginPageState extends State<LoginPage> {
                 label: "Continue with email",
                 textColor: Colors.white,
                 backgroundColor: Colors.purple,
+              onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Email()));
+                }
               ),
               SizedBox(height: 20),
 
@@ -114,8 +87,9 @@ class _LoginPageState extends State<LoginPage> {
               buildButton(
                 label: "Use phone number",
                 textColor: Colors.purple,
-                backgroundColor: Colors.white30,
+                backgroundColor: const Color.fromRGBO(255, 255, 255, 0.302),
                 borderColor: Colors.black,
+                
               ),
               SizedBox(height: 20),
 
@@ -155,7 +129,8 @@ class _LoginPageState extends State<LoginPage> {
                 borderColor: Colors.black,
                 onPressed: () async {
                   try{
-                    await Auth().signInWithGoogle();
+                   final userCredential = await Auth().signInWithGoogle();
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Home()));
                   }catch(err){
                       print(err);
                   }

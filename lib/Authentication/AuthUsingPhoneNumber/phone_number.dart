@@ -1,6 +1,3 @@
-import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 

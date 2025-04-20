@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:matrimony_flutter/User_Display/app_bar.dart';
 import '../Utils/importFiles.dart'; // Ensure this file defines your constants
 
