@@ -6,6 +6,7 @@ import 'package:matrimony_flutter/Userform/user_form.dart';
 import 'package:matrimony_flutter/User_Display/Home/user_list.dart';
 import 'package:animations/animations.dart';
 import 'package:matrimony_flutter/launch_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../app_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../Authentication/auth.dart';
@@ -32,12 +33,26 @@ class _HomeState extends State<Home> {
     );
   }
 
+   List<dynamic>? details;
+
   @override
   void initState() {
     super.initState();
     // Initialize activeIndex with widget.index if passed, else default to 0
+
     activeIndex = widget.index;
   }
+
+  Future<void> _getProfileDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    details!.add(prefs.getString("name")?? "");
+    details!.add(prefs.getString("email")?? "");
+    details!.add(prefs.getString("gender")?? "");
+    details!.add(prefs.getString("city")?? "");
+    details!.add(prefs.getStringList("hobbies")?? "");
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +115,11 @@ class _HomeState extends State<Home> {
           width: 300,
           child: ListView(
             children: [
-              DrawerHeader(child: Text("Profile Name")),
-              ListTile(title: Text("Data 1")),
-              ListTile(title: Text("Data 1")),
+              DrawerHeader(child: Text(details?[0]!=null ? "${details?[0]}" : "")),
+              ListTile(title: Text(details?[1]!=null ? "${details?[1]}" : "")),
+              ListTile(title: Text(details?[2]!=null ? "${details?[2]}" : "")),
+              ListTile(title: Text(details?[3]!=null ? "${details?[3]}" : "")),
+              ListTile(title: Text(details?[4]!=null ? "${details?[4]}" : "")),
               ListTile(title: Text((user?.email).toString())),
               ElevatedButton(
                 onPressed: () {

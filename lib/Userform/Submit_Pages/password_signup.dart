@@ -1,28 +1,29 @@
 import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
+import 'package:matrimony_flutter/Userform/Submit_Pages/name_profilephoto.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PasswordViaEmail extends StatefulWidget {
-  const PasswordViaEmail({super.key});
+class PasswordSignup extends StatefulWidget {
+  const PasswordSignup({super.key});
 
   @override
-  State<PasswordViaEmail> createState() => _PasswordViaEmailState();
+  State<PasswordSignup> createState() => _PasswordSignupState();
 }
 
-class _PasswordViaEmailState extends State<PasswordViaEmail> {
+class _PasswordSignupState extends State<PasswordSignup> {
   final GlobalKey<FormState> _formkeyOfPassword = GlobalKey();
-  Future<void> signIn() async {
+  Future<void> signup() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      await Auth().signIn(
-        email: prefs.getString("email").toString(),
+      await Auth().signUp(
+        email: prefs.getString("emailSignup").toString(),
         password: passwordController.text,
       );
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Home()),
+        MaterialPageRoute(builder: (context) => VerifyEmailAddress()),
       );
     } on FirebaseAuthException catch (e) {
       String err = '';
@@ -116,21 +117,7 @@ class _PasswordViaEmailState extends State<PasswordViaEmail> {
             ),
 
 SizedBox(height: 5),
-            GestureDetector(
-              onTap: () async {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => PasswordViaEmail()),
-                // );
-                SharedPreferences prefs =await SharedPreferences.getInstance();
-                await resetPassword(prefs.getString("email"));
-              },
-              child: Text(
-                "forgot a password ?",
-                style: GoogleFonts.nunito(),
-                textAlign: TextAlign.center,
-              ),
-            ),
+            
             
           ],
         ),
@@ -141,7 +128,7 @@ SizedBox(height: 5),
                 backgroundColor: Colors.purple,
                 foregroundColor: Colors.white,
                 onPressed: () async {
-                  signIn();
+                  signup();
                 },
                 child: Icon(Iconsax.arrow_circle_right),
               )

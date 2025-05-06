@@ -1,17 +1,18 @@
 import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/passwordViaEmail.dart';
 import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
+import 'package:matrimony_flutter/Userform/Submit_Pages/password_signup.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Email extends StatefulWidget {
-  const Email({super.key});
+class MobileSignup extends StatefulWidget {
+  const MobileSignup({super.key});
 
   @override
-  State<Email> createState() => _EmailState();
+  State<MobileSignup> createState() => _MobileSignupState();
 }
 
-class _EmailState extends State<Email> {
-  final GlobalKey<FormState> _formkeyOfEmail = GlobalKey();
+class _MobileSignupState extends State<MobileSignup> {
+  final GlobalKey<FormState> _formkeyOfMobileSignup = GlobalKey();
 
   
 
@@ -20,7 +21,7 @@ class _EmailState extends State<Email> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
-        key: _formkeyOfEmail,
+        key: _formkeyOfMobileSignup,
         child: Column(
           children: [
             SizedBox(height: 150),
@@ -34,7 +35,7 @@ class _EmailState extends State<Email> {
                   textAlign: TextAlign.left,
                 ),
                 subtitle: Text(
-                  "Please enter your valid email. We will send you a 4-digit code to verify your account.",
+                  "Please enter your valid email. We will send you a mail to verify your account.",
                   style: GoogleFonts.nunito(fontSize: 15),
                   textAlign: TextAlign.left,
                 ),
@@ -51,7 +52,7 @@ class _EmailState extends State<Email> {
                 validateFun: validateEmail,
                 label: "Enter your email address",
                 onChanged: () {
-                  if (_formkeyOfEmail.currentState?.validate() ?? true) {
+                  if (_formkeyOfMobileSignup.currentState?.validate() ?? true) {
                     isDisplayFloatButton = true;
                     setState(() {});
                   } else {
@@ -75,10 +76,10 @@ class _EmailState extends State<Email> {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
 
-                  prefs.setString("email", emailController.text);
+                  prefs.setString("MobileSignup", emailController.text);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PasswordViaEmail()),
+                    MaterialPageRoute(builder: (context) => PasswordSignup()),
                     
                   );
                 },

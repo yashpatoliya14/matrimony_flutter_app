@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/passwordViaEmail.dart';
+import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './form_utils.dart';
 
 
@@ -16,31 +19,44 @@ Widget getTextFormField({
   hideText,
   suffixIcon,
   focusNode,
-  onChanged
+  onChanged,
+  fillColor,
+  labelColor,
+  iconColor,
+  contentColor,
+  onEditingComplete
 }){
   return StatefulBuilder(
     builder: (context,setState){
       return TextFormField(
         controller: controller,
         focusNode: focusNode,
-        
+        cursorColor: Colors.purple.shade100,
         decoration: InputDecoration(
+          labelStyle: GoogleFonts.nunito(color: labelColor ?? Colors.black),
           contentPadding: EdgeInsets.all(20),
           labelText: label,
+          hintStyle: GoogleFonts.nunito(color: labelColor ?? Colors.black),
           errorText: errorMsg,
-          border: OutlineInputBorder(
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              borderSide: BorderSide(color: Colors.black12)
+          ),
+          focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(30)),
               borderSide: BorderSide(color: Colors.purple)
           ),
-          fillColor: Colors.white,
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+          ),
+          fillColor: fillColor ?? Colors.white,
           filled: true,
           prefixIcon: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Icon(icon,size: 25,),
+            child: Icon(icon,size: 25,color: iconColor ?? Colors.black,),
           ),
           suffixIcon: suffixIcon,
         ),
-
         keyboardType: keyboardType,
 
         textCapitalization: TextCapitalization.words,
@@ -50,6 +66,10 @@ Widget getTextFormField({
         validator: (value) {
           return validateFun!(value);
         },
+        
+        style:GoogleFonts.nunito(
+          color: contentColor ?? Colors.black
+        ),
 
         onChanged: (value) {
           setState(() {
@@ -68,6 +88,23 @@ Widget getTextFormField({
     },
   );
 }
+
+Widget buildFloatingActionButton(
+  {
+    required BuildContext context,
+    required Function onPressed,
+  }
+
+){
+  return FloatingActionButton(
+                backgroundColor: Colors.purple,
+                foregroundColor: Colors.white,
+                onPressed: (){
+                  onPressed();
+                },
+                child: Icon(Iconsax.arrow_circle_right));
+}
+
 
 Widget getRadioButtonError(context) {
   if (genderError != null) {

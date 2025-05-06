@@ -182,35 +182,7 @@ class _UserformState extends State<UserForm> {
                     ),
                   ),
 
-                  //date of birth
-                  Container(
-                    width: screenWidth * 0.9,
-                    margin: EdgeInsets.all(screenWidth * 0.025),
-                    child: getTextFormField(
-                      controller: dobController,
-                      readOnly: true,
-                      label: "Date of Birth",
-                      errorMsg: dobError,
-                      validateFun:validateDOB ,
-                      icon: Iconsax.calendar,
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: selectedDate!,
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime.now(),
-                        );
-
-                        if (pickedDate != null && pickedDate != selectedDate) {
-                          setState(() {
-                            selectedDate = pickedDate;
-                            dobController.text = DateFormat("dd/MM/yyyy").format(selectedDate!); // Change format here
-                            dobError = validateDOB(dobController.text);
-                          });
-                        }
-                      },
-                    ),
-                  ),
+                  
 
                   //select gender
                   Container(

@@ -25,19 +25,19 @@ List<String> cities = [
   "hydrabad",
   "kolakata"
 ];
-
+bool isDisplayFloatButton = false;
 User user = User();
 bool? ishidePass = true;
 bool? ishideConfirm = true;
 
 //select variables
 int? selectedRadio = 0;
-String? selectedCity;
+String? selectedCity ;
 DateTime? selectedDate = DateTime.now();
 bool isSelectedRadio = true;
 bool isSelectedCity = true;
 bool isSelectedHobbies = true;
-List<dynamic>? selectedHobbies;
+List<String>? selectedHobbies;
 
 //errors variables
 String? firstNameError;

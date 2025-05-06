@@ -1,4 +1,4 @@
-export 'package:matrimony_flutter/verify_email_address.dart';
+export 'package:matrimony_flutter/Userform/Submit_Pages/verify_email_address.dart';
 export 'package:flutter/cupertino.dart';
 export 'package:matrimony_flutter/Authentication/auth.dart';
 export 'package:matrimony_flutter/User_Display/Home/home.dart';
@@ -13,5 +13,5 @@ export 'package:iconsax/iconsax.dart';
 export 'package:matrimony_flutter/User_Display/app_bar.dart';
 export 'package:matrimony_flutter/Userform/form_methods.dart';
 export 'package:matrimony_flutter/Userform/form_utils.dart';
-export 'package:matrimony_flutter/forgot_password.dart';
+export 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/forgot_password.dart';
 export 'package:iconic/iconic.dart';

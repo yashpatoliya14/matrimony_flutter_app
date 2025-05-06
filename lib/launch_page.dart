@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/email.dart';
 import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
-import 'package:matrimony_flutter/Userform/name_profilephoto.dart';
+import 'package:matrimony_flutter/Userform/Submit_Pages/email_signup.dart';
+import 'package:matrimony_flutter/Userform/Submit_Pages/name_profilephoto.dart';
 import 'package:matrimony_flutter/Widgets/common_buttons.dart';
 
 class LaunchPage extends StatefulWidget {
@@ -85,7 +87,7 @@ class _LaunchPageState extends State<LaunchPage> {
             textColor: Colors.white,
             backgroundColor: Colors.purple,
             onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>NameProfilephoto()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>EmailSignup()));
             }
           ),
 
