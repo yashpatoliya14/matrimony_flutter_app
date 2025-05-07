@@ -53,6 +53,7 @@ dependencies:
   get:
   google_sign_in:
   iconic: ^0.1.0
+  flutter_image_compress:
 dev_dependencies:
   flutter_test:
     sdk: flutter

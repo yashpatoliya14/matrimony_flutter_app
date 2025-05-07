@@ -86,9 +86,20 @@ class _LaunchPageState extends State<LaunchPage> {
             label: "Create an account",
             textColor: Colors.white,
             backgroundColor: Colors.purple,
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>EmailSignup()));
-            }
+            onPressed: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                    pageBuilder: (context,animation,secondaryAnimation) => EmailSignup(),
+                    transitionsBuilder:(context,animation,secondaryAnimation,child){
+                      return FadeTransition(
+                      child:child,
+                      opacity:animation
+                      );
+              }
+                ),
+              );
+            },
           ),
 
           Row(
@@ -99,7 +110,15 @@ class _LaunchPageState extends State<LaunchPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    PageRouteBuilder(
+                        pageBuilder: (context,animation,secondaryAnimation) => LoginPage(),
+                        transitionsBuilder:(context,animation,secondaryAnimation,child){
+                          return FadeTransition(
+                              child:child,
+                              opacity:animation
+                          );
+                        }
+                    ),
                   );
                 },
                 child: Text(
@@ -149,7 +168,7 @@ class _LaunchPageState extends State<LaunchPage> {
             textAlign: TextAlign.center,
           ),
         ),
-        SizedBox(
+        SizedBox( 
           height: 40,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
