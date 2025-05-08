@@ -14,6 +14,7 @@ final List<Map<String, dynamic>> hobbiesData = [
 
 //cities list
 List<String> cities = [
+  "Select your city",
   "Rajkot",
   "Ahemdabad",
   "Vadodara",

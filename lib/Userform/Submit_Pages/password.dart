@@ -1,15 +1,18 @@
-import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:matrimony_flutter/Userform/Submit_Pages/name_profilephoto.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PasswordViaEmail extends StatefulWidget {
-  const PasswordViaEmail({super.key});
+class Password extends StatefulWidget {
+  bool isSignin;
+  Password({super.key,required this.isSignin});
 
   @override
-  State<PasswordViaEmail> createState() => _PasswordViaEmailState();
+  State<Password> createState() => _PasswordState();
 }
 
-class _PasswordViaEmailState extends State<PasswordViaEmail> {
+class _PasswordState extends State<Password> {
   final GlobalKey<FormState> _formkeyOfPassword = GlobalKey();
   Future<void> signIn() async {
     try {
@@ -50,6 +53,34 @@ class _PasswordViaEmailState extends State<PasswordViaEmail> {
       print(':::::$e::::');
     }
   }
+  Future<void> signup() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("Password", passwordController.text);
+      await Auth().signUp(
+        email: prefs.getString("emailSignup").toString(),
+        password: passwordController.text,
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => VerifyEmailAddress()),
+      );
+    } on FirebaseAuthException catch (e) {
+      String err = '';
+      switch (e.code) {
+        case 'invalid-credential':
+          err = 'Invalid email or password';
+          break;
+        default:
+          err = "An unknown error occurred. Please try again.";
+      }
+      Get.snackbar("Error", err);
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
 
   @override
   void initState() {
@@ -102,50 +133,29 @@ class _PasswordViaEmailState extends State<PasswordViaEmail> {
                   icon:
                       ishidePass! ? Icon(Iconsax.eye_slash) : Icon(Iconsax.eye),
                 ),
-                onChanged: () {
-                  if (_formkeyOfPassword.currentState?.validate() ?? true) {
-                    isDisplayFloatButton = true;
-                    setState(() {});
-                  } else {
-                    isDisplayFloatButton = false;
-                    setState(() {});
-                  }
-                },
                 validateFun: validatePassword,
               ),
             ),
 
 SizedBox(height: 5),
-            GestureDetector(
-              onTap: () async {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => PasswordViaEmail()),
-                // );
-                SharedPreferences prefs =await SharedPreferences.getInstance();
-                await resetPassword(prefs.getString("email"));
-              },
-              child: Text(
-                "forgot a password ?",
-                style: GoogleFonts.nunito(),
-                textAlign: TextAlign.center,
-              ),
+            buildButton(
+                label: "Save",
+                textColor: Colors.white,
+                backgroundColor: Colors.purple,
+                icon: Icon(Iconsax.next, color: Colors.white),
+                onPressed: () async {
+                  if(widget.isSignin){
+                    signIn();
+                  }else{
+                    signup();
+                  }
+                }
             ),
             
           ],
         ),
       ),
-      floatingActionButton:
-          isDisplayFloatButton
-              ? FloatingActionButton(
-                backgroundColor: Colors.purple,
-                foregroundColor: Colors.white,
-                onPressed: () async {
-                  signIn();
-                },
-                child: Icon(Iconsax.arrow_circle_right),
-              )
-              : null,
+
     );
   }
 }

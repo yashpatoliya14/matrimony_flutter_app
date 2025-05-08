@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/email.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:matrimony_flutter/launch_page.dart';
 Future<void> main() async {

@@ -1,9 +1,5 @@
-import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
-import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
 import 'package:matrimony_flutter/Userform/Submit_Pages/city.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Gender extends StatefulWidget {
   const Gender({super.key});
@@ -126,26 +122,26 @@ class _NameProfilephotoState extends State<Gender> {
                       ),
               ),
               SizedBox(height: screenWidth*.02),
-              
+              buildButton(
+                  label: "Next",
+                  textColor: Colors.white,
+                  backgroundColor: Colors.purple,
+                  icon: Icon(Iconsax.next, color: Colors.white),
+                  onPressed: () async {
+                    SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+
+                    prefs.setString("gender", selectedRadio==1 ? "Female":"Male");
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context)=>City()));
+                  }
+              ),
             ],
           ),
         ),
       ),
-
-      floatingActionButton:
-          buildFloatingActionButton(
-                onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-
-                      prefs.setString("gender", selectedRadio==1 ? "Female":"Male");
-
-                      Navigator.push(
-                        context, 
-                        MaterialPageRoute(builder: (context)=>City()));
-                },
-                context: context,
-              ),
     );
   }
 }

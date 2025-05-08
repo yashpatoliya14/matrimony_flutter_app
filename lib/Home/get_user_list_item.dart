@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:matrimony_flutter/User_Display/user_detail.dart';
+import 'package:matrimony_flutter/User_Detail/user_detail.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 
-import './search_bar.dart';
+import 'search_bar.dart';
 
 Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,updateUser, deleteUser) {
   final currentList = searchController.text.isEmpty ? userList : searchList;

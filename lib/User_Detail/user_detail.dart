@@ -1,5 +1,5 @@
-import 'package:matrimony_flutter/User_Display/app_bar.dart';
-import '../Utils/importFiles.dart'; // Ensure this file defines your constants
+import 'package:matrimony_flutter/Home/app_bar.dart';
+import '../../Utils/importFiles.dart'; // Ensure this file defines your constants
 
 class UserDetail extends StatefulWidget {
   final Map<String, dynamic> data;

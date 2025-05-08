@@ -1,11 +1,5 @@
-import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
-import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
 import 'package:matrimony_flutter/Userform/Submit_Pages/Hobbies.dart';
-import 'package:matrimony_flutter/Userform/Submit_Pages/gender.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 class City extends StatefulWidget {
   const City({super.key});
 
@@ -88,23 +82,27 @@ class _CityState extends State<City> {
                       validator: (value) => value == null ? "Please select a city" : null, // Validation
                     ),
                   ),
+                buildButton(
+                    label: "Save",
+                    textColor: Colors.white,
+                    backgroundColor: Colors.purple,
+                    icon: Icon(Iconsax.next, color: Colors.white),
+                    onPressed: () async {
+                      SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+
+                      prefs.setString("city", selectedCity!);
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Hobbies()));
+
+                    }
+                ),
               ],
             ),
           ),
         ),
       ),
 
-      floatingActionButton:
-      buildFloatingActionButton(
-                onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
 
-                      prefs.setString("city", selectedCity!);
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Hobbies()));
-                },
-                context: context,
-              ),
     );
   }
 }

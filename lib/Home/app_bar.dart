@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
+
+import 'package:matrimony_flutter/Utils/importFiles.dart';
 
 int activeIndex = 0;
 bool isSearchBar = false;

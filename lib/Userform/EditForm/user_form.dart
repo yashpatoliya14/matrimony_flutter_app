@@ -1,10 +1,5 @@
-import 'package:iconsax/iconsax.dart';
-import 'package:matrimony_flutter/User_Display/Home/home.dart';
-import 'package:matrimony_flutter/User_Display/app_bar.dart';
-import 'package:matrimony_flutter/Userform/form_methods.dart';
-import '../Utils/importFiles.dart';
+import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:intl/intl.dart';
-import './form_utils.dart';
 class UserForm extends StatefulWidget {
   bool isAppBar;
   Map<String, dynamic>? userDetail;

@@ -1,10 +1,6 @@
-import 'package:http/http.dart';
-import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
-import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
-import 'package:matrimony_flutter/Userform/Submit_Pages/gender.dart';
+
+import 'package:matrimony_flutter/Userform/Submit_Pages/mobile_signup.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Hobbies extends StatefulWidget {
   const Hobbies({super.key});
@@ -15,33 +11,7 @@ class Hobbies extends StatefulWidget {
 
 class _HobbiesState extends State<Hobbies> {
   GlobalKey<FormState> _Hobbies = GlobalKey();
-  void registerUser({
-    required FullName,
-    required Email,
-    required Mobile,
-    required Dob,
-    required Gender,
-    required City,
-    required Hobbies,
-    required Password,
 
-  }){
-    print(Mobile);
-    final data = {
-      FULLNAME: FullName,
-      EMAIL: Email,
-      MOBILE: Mobile,
-      PASSWORD: Password,
-      DOB: Dob,
-      GENDER: Gender,
-      CITY: City,
-      HOBBY: Hobbies,
-      ISFAVORITE: false,
-      
-    };
-    user.addUser(map: data);
-
-  }
 
   @override
   void initState() {
@@ -58,86 +28,77 @@ class _HobbiesState extends State<Hobbies> {
       body: Form(
         key: _Hobbies,
         child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: screenWidth*0.2),
-                 Container(
-                  child: Text(
-                    "Select your Hobbies",
-                    style: GoogleFonts.nunito(
-                      fontSize: 35,
-                      fontWeight: FontWeight.w600
-                    ),
-                    ),
-                ),
-                SizedBox(height: screenWidth*0.1),
-                Container(
-                  width: screenWidth*0.9,
-                  margin: EdgeInsets.all(screenWidth*0.025),
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Wrap(
-                        spacing: 10,
-                        
-                        children: hobbiesData.map((hobby) {
-                          return Container(
-                            margin: EdgeInsets.all(5),
-                            child: FilterChip(
-                              labelPadding: EdgeInsets.symmetric(horizontal: 25,vertical:10 ),
-                              label: Text(hobby["name"]),
-                              selected: hobby["isChecked"],
-                              backgroundColor: Colors.white,
-                              selectedColor: Colors.purple.shade100,
-                              onSelected: (bool selected) {
-                                setState(() {
-                                  hobby["isChecked"] = selected;
-                                });
-                              },
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      // getHobbiesError(context)
-                    ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: screenWidth*0.2),
+               Container(
+                child: Text(
+                  "Select your Hobbies",
+                  style: GoogleFonts.nunito(
+                    fontSize: 35,
+                    fontWeight: FontWeight.w600
                   ),
+                  ),
+              ),
+              SizedBox(height: screenWidth*0.1),
+              Container(
+                width: screenWidth*0.9,
+                margin: EdgeInsets.all(screenWidth*0.025),
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Wrap(
+                      spacing: 10,
+                      alignment: WrapAlignment.center,
+                      children: hobbiesData.map((hobby) {
+                        return Container(
+                          margin: EdgeInsets.all(5),
+                          child: FilterChip(
+                            labelPadding: EdgeInsets.symmetric(horizontal: 25,vertical:10 ),
+                            label: Text(hobby["name"]),
+                            selected: hobby["isChecked"],
+                            backgroundColor: Colors.white,
+                            selectedColor: Colors.purple.shade100,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                hobby["isChecked"] = selected;
+                              });
+                            },
+                          ),
+                        );
+                      }).toList(),
+                    ),
+
+                  ],
                 ),
-              ],
-            ),
+              ),
+              buildButton(
+                  label: "Next",
+                  textColor: Colors.white,
+                  backgroundColor: Colors.purple,
+                  icon: Icon(Iconsax.next, color: Colors.white),
+                  onPressed: () async {
+                    selectedHobbies = hobbiesData
+                        .where((hobby) => hobby["isChecked"])
+                        .map((hobby) => hobby["name"] as String)
+                        .toList();
+                    SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+
+                    prefs.setStringList("hobbies", selectedHobbies!);
+
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MobileSignup()));
+                  }
+              ),
+            ],
           ),
         ),
       ),
-
-      floatingActionButton:
-      buildFloatingActionButton(
-                onPressed: () async {
-                  selectedHobbies = hobbiesData
-                      .where((hobby) => hobby["isChecked"])
-                      .map((hobby) => hobby["name"] as String)
-                      .toList();
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-
-                      prefs.setStringList("hobbies", selectedHobbies!);
-                      registerUser(
-                        FullName: prefs.getString("name"),
-                        Dob:prefs.getString("birthDate"),
-                        Email:prefs.getString("emailSignup"),
-                        Mobile:prefs.getInt("mobileSignup"),
-                        Gender: prefs.getString("gender"),
-                        Hobbies: prefs.getStringList("hobbies"),
-                        City: prefs.getString("city"),
-                        Password: prefs.getString("passwordSignup"),
-
-                      );
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
-                },
-                context: context,
-              ),
     );
   }
 }

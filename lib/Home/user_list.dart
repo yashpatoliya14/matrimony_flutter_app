@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:matrimony_flutter/User_Display/loader.dart';
-import 'package:matrimony_flutter/Userform/user_form.dart';
+import 'package:matrimony_flutter/Home/loader.dart';
+import 'package:matrimony_flutter/Userform/EditForm/user_form.dart';
 import 'package:matrimony_flutter/Utils/standard.dart';
 import '../../Utils/crud_operation.dart';
-import './search_bar.dart';
-import '../app_bar.dart';
-import './get_user_list_item.dart';
+import 'search_bar.dart';
+import 'app_bar.dart';
+import 'get_user_list_item.dart';
 
 
 class UserList extends StatefulWidget {

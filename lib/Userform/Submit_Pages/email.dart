@@ -1,20 +1,20 @@
 import 'dart:convert';
-
-import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/passwordViaEmail.dart';
-import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
-import 'package:matrimony_flutter/Userform/Submit_Pages/password_signup.dart';
+import 'package:matrimony_flutter/Userform/Submit_Pages/password.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-class EmailSignup extends StatefulWidget {
-  const EmailSignup({super.key});
+
+
+
+class Email extends StatefulWidget {
+  bool isSignIn;
+  Email({super.key,required this.isSignIn});
 
   @override
-  State<EmailSignup> createState() => _EmailSignupState();
+  State<Email> createState() => _EmailState();
 }
 
-class _EmailSignupState extends State<EmailSignup> {
-  final GlobalKey<FormState> _formkeyOfEmailSignup = GlobalKey();
+class _EmailState extends State<Email> {
+  final GlobalKey<FormState> _formkeyOfEmail = GlobalKey();
   bool? isUserExist;
    Future<void> checkUser({required String email}) async {
      final url = Uri.parse("http://192.168.51.147:3000/api/check/$email");
@@ -40,7 +40,7 @@ class _EmailSignupState extends State<EmailSignup> {
 
     return Scaffold(
       body: Form(
-        key: _formkeyOfEmailSignup,
+        key: _formkeyOfEmail,
         child: Column(
           children: [
             SizedBox(height: 150),
@@ -71,7 +71,7 @@ class _EmailSignupState extends State<EmailSignup> {
                 validateFun: validateEmail,
                 label: "Enter your email address",
                 onChanged: () {
-                  if (_formkeyOfEmailSignup.currentState?.validate() ?? true) {
+                  if (_formkeyOfEmail.currentState?.validate() ?? true) {
                     isDisplayFloatButton = true;
                     setState(() {});
                   } else {
@@ -81,36 +81,46 @@ class _EmailSignupState extends State<EmailSignup> {
                 },
               ),
             ),
+            buildButton(
+                label: "Next",
+                textColor: Colors.white,
+                backgroundColor: Colors.purple,
+                icon: Icon(Iconsax.next, color: Colors.white),
+                onPressed: () async {
+                  SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
 
-            
+                  prefs.setString("emailSignup", emailController.text);
+
+
+                  if(widget.isSignIn){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Password(isSignin: true)),
+                    );
+                  }else{
+                    await checkUser(email: emailController.text);
+
+                    if(isUserExist?? true){
+
+                      Get.snackbar("Try Again!","Email is already registered");
+                    }else{
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Password(isSignin: false)),
+
+                      );
+
+                    }
+                  }
+                }
+            ),
+
           ],
         ),
       ),
 
-      floatingActionButton:
-          isDisplayFloatButton
-              ? buildFloatingActionButton(
-                context:context,
-                onPressed: () async {
-                  await checkUser(email: emailController.text);
-                  if(isUserExist?? true){
-
-                    Get.snackbar("Try Again!","Email is already registered");
-                  }else{
-                    SharedPreferences prefs =
-                    await SharedPreferences.getInstance();
-
-                    prefs.setString("emailSignup", emailController.text);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PasswordSignup()),
-
-                    );
-                  }
-
-                },
-                )
-              : null,
     );
   }
 }

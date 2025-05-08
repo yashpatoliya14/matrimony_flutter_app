@@ -1,4 +1,4 @@
-import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
+import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:matrimony_flutter/Userform/Submit_Pages/name_profilephoto.dart';
 import 'package:matrimony_flutter/launch_page.dart';
 
@@ -17,7 +17,8 @@ class _WidgetTreeState extends State<WidgetTree> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data!.emailVerified) {
-            return NameProfilephoto();
+
+            return Home();
           } else {
             return VerifyEmailAddress();
           }

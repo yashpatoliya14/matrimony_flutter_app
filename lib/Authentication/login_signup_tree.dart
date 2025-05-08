@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/email.dart';
-import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
-import 'package:matrimony_flutter/Widgets/common_buttons.dart';
-export 'package:get/get.dart';
+
+import 'package:matrimony_flutter/Userform/Submit_Pages/email.dart';
+import 'package:matrimony_flutter/Utils/importFiles.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -78,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                 textColor: Colors.white,
                 backgroundColor: Colors.purple,
               onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Email()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Email(isSignIn: true)));
                 }
               ),
               SizedBox(height: 20),

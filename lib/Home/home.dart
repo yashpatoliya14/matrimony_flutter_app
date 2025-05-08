@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:matrimony_flutter/User_Display/Home/about_page.dart';
-import 'package:matrimony_flutter/User_Display/favoriteList.dart';
-import 'package:matrimony_flutter/Userform/user_form.dart';
-import 'package:matrimony_flutter/User_Display/Home/user_list.dart';
+import 'package:matrimony_flutter/Home/about_page.dart';
+import 'package:matrimony_flutter/Home/favoriteList.dart';
+import 'package:matrimony_flutter/Userform/EditForm/user_form.dart';
+import 'package:matrimony_flutter/Home/user_list.dart';
 import 'package:animations/animations.dart';
 import 'package:matrimony_flutter/launch_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../app_bar.dart';
+import 'app_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../Authentication/auth.dart';
 

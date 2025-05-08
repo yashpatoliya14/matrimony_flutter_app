@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:matrimony_flutter/User_Display/loader.dart';
-import 'package:matrimony_flutter/User_Display/user_detail.dart';
+import 'package:matrimony_flutter/Home/loader.dart';
+import 'package:matrimony_flutter/User_Detail/user_detail.dart';
 import 'package:matrimony_flutter/Utils/standard.dart';
-import '../Utils/crud_operation.dart';
+import '../../Utils/crud_operation.dart';
 
 class Favoritelist extends StatefulWidget {
 

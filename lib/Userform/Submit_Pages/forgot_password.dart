@@ -1,12 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
-import 'package:matrimony_flutter/User_Display/app_bar.dart';
-import 'package:matrimony_flutter/Userform/form_methods.dart';
-import 'package:matrimony_flutter/Userform/form_utils.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:matrimony_flutter/Utils/importFiles.dart';
+
+
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
 

@@ -1,9 +1,5 @@
-import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/passwordViaEmail.dart';
-import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
-import 'package:matrimony_flutter/Userform/Submit_Pages/email_signup.dart';
-import 'package:matrimony_flutter/Userform/Submit_Pages/password_signup.dart';
+import 'package:matrimony_flutter/Userform/Submit_Pages/email.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MobileSignup extends StatefulWidget {
   const MobileSignup({super.key});
@@ -69,29 +65,26 @@ class _MobileSignupState extends State<MobileSignup> {
                 },
               ),
             ),
-
-            
-          ],
-        ),
-      ),
-
-      floatingActionButton:
-          isDisplayFloatButton
-              ? buildFloatingActionButton(
-                context:context,
+            buildButton(
+                label: "Next",
+                textColor: Colors.white,
+                backgroundColor: Colors.purple,
+                icon: Icon(Iconsax.next, color: Colors.white),
                 onPressed: () async {
                   SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
+                  await SharedPreferences.getInstance();
 
                   prefs.setInt("mobileSignup", int.parse(mobileController.text));
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => EmailSignup()),
-                    
-                  );
-                },
-                )
-              : null,
+                    MaterialPageRoute(builder: (context) => Email(isSignIn: false,)),
+
+                  );}
+            ),
+            
+          ],
+        ),
+      ),
     );
   }
 }
