@@ -53,7 +53,7 @@ class _UserformState extends State<UserForm> {
           int.parse(db[1]),
           int.parse(db[0])
       );
-      selectedHobbies = widget.userDetail![HOBBY] ;
+      selectedHobbies = List<String>.from(widget.userDetail![HOBBY] ?? []);;
         for (var hobby in hobbiesData) {
           hobby["isChecked"] = selectedHobbies!.contains(hobby["name"]);
         }
@@ -108,7 +108,19 @@ class _UserformState extends State<UserForm> {
                 children: [
 
                   //fullname
-                  
+                  Container(
+                    width: screenWidth * 0.9,
+                    margin: EdgeInsets.all(screenWidth * 0.025),
+
+                    child: getTextFormField(
+                      keyboardType: TextInputType.name,
+                      controller: fullnameController,
+                      label: 'Full name',
+                      errorMsg: firstNameError,
+                      icon: Iconsax.message,
+                      validateFun: validateFirstName,
+                    ),
+                  ),
 
                   //Email
                   Container(
@@ -182,7 +194,53 @@ class _UserformState extends State<UserForm> {
                     ),
                   ),
 
-                  
+                  Container(
+                    width: screenWidth * 0.9,
+                    margin: EdgeInsets.all(screenWidth * 0.025),
+                    child: getTextFormField(
+                      controller: dobController,
+                      readOnly: true,
+                      label: "Date of birth",
+                      errorMsg: dobError,
+                      validateFun: validateDOB,
+                      icon: Iconsax.calendar,
+                      labelColor: Colors.purple.shade400,
+                      iconColor: Colors.purple.shade400,
+                      contentColor: Colors.purple.shade400,
+                      fillColor: Colors.purple.shade50,
+                      onChanged: (value){
+                        if(_formkey.currentState!.validate() ??  true){
+                          setState(() {
+                            isDisplayFloatButton=true;
+                          });
+                        }
+                      },
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: selectedDate!,
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
+
+                        if (pickedDate != null && pickedDate != selectedDate) {
+
+                          setState(() {
+                            selectedDate = pickedDate;
+                            dobController.text = DateFormat(
+                              "dd/MM/yyyy",
+                            ).format(selectedDate!); // Change format here
+                            dobError = validateDOB(dobController.text);
+                          });
+                          if(_formkey.currentState!.validate() ??  true){
+                            setState(() {
+                              isDisplayFloatButton=true;
+                            });
+                          }
+                        }
+                      },
+                    ),
+                  ),
 
                   //select gender
                   Container(
@@ -416,7 +474,7 @@ class _UserformState extends State<UserForm> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('Save successful')),
                               );
-                               user.updateUser(map: data, id: int.parse(widget.userDetail![ID]));
+                               user.updateUser(map: data, id: widget.userDetail![ID]);
 
                               data[ID] = widget.userDetail![ID];
                               Navigator.pop(context,data);

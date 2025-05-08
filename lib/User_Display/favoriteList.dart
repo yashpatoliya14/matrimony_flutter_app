@@ -195,7 +195,7 @@ class _UserListState extends State<Favoritelist> {
                                 });
                                 await user.updateUser(
                                   map: favoriteList[index],
-                                  id: int.parse(favoriteList[index][ID]),
+                                  id: favoriteList[index][ID],
                                 );
 
 

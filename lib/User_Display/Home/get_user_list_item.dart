@@ -4,7 +4,7 @@ import 'package:matrimony_flutter/Utils/importFiles.dart';
 
 import './search_bar.dart';
 
-Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,updateUser,deleteUser) {
+Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,updateUser, deleteUser) {
   final currentList = searchController.text.isEmpty ? userList : searchList;
 
   return Padding(
@@ -119,7 +119,7 @@ Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,upd
                                   favoriteUser(index,userList[index]);
                                   await widget.user.updateUser(
                                     map: userList[index],
-                                    id: int.parse(userList[index][ID]),
+                                    id: userList[index][ID],
                                   );
                                 }else{
 
@@ -127,7 +127,7 @@ Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,upd
                                   favoriteUser(index,searchList[index]);
                                   await widget.user.updateUser(
                                     map: searchList[index],
-                                    id: int.parse(searchList[index][ID]),
+                                    id: searchList[index][ID],
                                   );
                                 }
 

@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/passwordViaEmail.dart';
 import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
 import 'package:matrimony_flutter/Userform/Submit_Pages/password_signup.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:http/http.dart' as http;
 class EmailSignup extends StatefulWidget {
   const EmailSignup({super.key});
 
@@ -13,12 +15,29 @@ class EmailSignup extends StatefulWidget {
 
 class _EmailSignupState extends State<EmailSignup> {
   final GlobalKey<FormState> _formkeyOfEmailSignup = GlobalKey();
+  bool? isUserExist;
+   Future<void> checkUser({required String email}) async {
+     final url = Uri.parse("http://192.168.51.147:3000/api/check/$email");
+     print(email);
+     var res = await http.get(url);
 
-  
+     if(res.statusCode==200){
+        Map<dynamic,dynamic> data = jsonDecode(res.body);
+        print(":::::::::::::::::::::::::::::$data");
+        if(data['success']==true){
+            isUserExist = false;
+        }else{
+          isUserExist = true;
+        }
+     }
+   }
 
-  
+
+
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       body: Form(
         key: _formkeyOfEmailSignup,
@@ -73,15 +92,22 @@ class _EmailSignupState extends State<EmailSignup> {
               ? buildFloatingActionButton(
                 context:context,
                 onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
+                  await checkUser(email: emailController.text);
+                  if(isUserExist?? true){
 
-                  prefs.setString("emailSignup", emailController.text);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PasswordSignup()),
-                    
-                  );
+                    Get.snackbar("Try Again!","Email is already registered");
+                  }else{
+                    SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+
+                    prefs.setString("emailSignup", emailController.text);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PasswordSignup()),
+
+                    );
+                  }
+
                 },
                 )
               : null,

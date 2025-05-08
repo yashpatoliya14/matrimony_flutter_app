@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
@@ -14,6 +15,33 @@ class Hobbies extends StatefulWidget {
 
 class _HobbiesState extends State<Hobbies> {
   GlobalKey<FormState> _Hobbies = GlobalKey();
+  void registerUser({
+    required FullName,
+    required Email,
+    required Mobile,
+    required Dob,
+    required Gender,
+    required City,
+    required Hobbies,
+    required Password,
+
+  }){
+    print(Mobile);
+    final data = {
+      FULLNAME: FullName,
+      EMAIL: Email,
+      MOBILE: Mobile,
+      PASSWORD: Password,
+      DOB: Dob,
+      GENDER: Gender,
+      CITY: City,
+      HOBBY: Hobbies,
+      ISFAVORITE: false,
+      
+    };
+    user.addUser(map: data);
+
+  }
 
   @override
   void initState() {
@@ -87,11 +115,25 @@ class _HobbiesState extends State<Hobbies> {
       floatingActionButton:
       buildFloatingActionButton(
                 onPressed: () async {
+                  selectedHobbies = hobbiesData
+                      .where((hobby) => hobby["isChecked"])
+                      .map((hobby) => hobby["name"] as String)
+                      .toList();
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
 
-                      prefs.setStringList("name", selectedHobbies!);
+                      prefs.setStringList("hobbies", selectedHobbies!);
+                      registerUser(
+                        FullName: prefs.getString("name"),
+                        Dob:prefs.getString("birthDate"),
+                        Email:prefs.getString("emailSignup"),
+                        Mobile:prefs.getInt("mobileSignup"),
+                        Gender: prefs.getString("gender"),
+                        Hobbies: prefs.getStringList("hobbies"),
+                        City: prefs.getString("city"),
+                        Password: prefs.getString("passwordSignup"),
 
+                      );
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
                 },
                 context: context,

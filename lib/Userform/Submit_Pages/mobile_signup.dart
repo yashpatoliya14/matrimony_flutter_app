@@ -1,5 +1,6 @@
 import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/passwordViaEmail.dart';
 import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
+import 'package:matrimony_flutter/Userform/Submit_Pages/email_signup.dart';
 import 'package:matrimony_flutter/Userform/Submit_Pages/password_signup.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,12 +31,12 @@ class _MobileSignupState extends State<MobileSignup> {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: ListTile(
                 title: Text(
-                  "My Email",
+                  "My Mobile",
                   style: GoogleFonts.nunito(fontSize: 40),
                   textAlign: TextAlign.left,
                 ),
                 subtitle: Text(
-                  "Please enter your valid email. We will send you a mail to verify your account.",
+                  "Please enter your valid mobile number.",
                   style: GoogleFonts.nunito(fontSize: 15),
                   textAlign: TextAlign.left,
                 ),
@@ -47,10 +48,16 @@ class _MobileSignupState extends State<MobileSignup> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
               child: getTextFormField(
-                controller: emailController,
-                icon: Iconsax.message,
-                validateFun: validateEmail,
-                label: "Enter your email address",
+                controller: mobileController,
+                icon: Iconsax.mobile,
+                validateFun: validateMobile,
+                label: "Enter your mobile no.",
+                keyboardType: TextInputType.phone,
+                errorMsg: mobileError,
+                inputFormator: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10)
+                ],
                 onChanged: () {
                   if (_formkeyOfMobileSignup.currentState?.validate() ?? true) {
                     isDisplayFloatButton = true;
@@ -76,10 +83,10 @@ class _MobileSignupState extends State<MobileSignup> {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
 
-                  prefs.setString("MobileSignup", emailController.text);
+                  prefs.setInt("mobileSignup", int.parse(mobileController.text));
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PasswordSignup()),
+                    MaterialPageRoute(builder: (context) => EmailSignup()),
                     
                   );
                 },

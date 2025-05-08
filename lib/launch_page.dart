@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:matrimony_flutter/Authentication/AuthUsingPhoneNumber/email.dart';
 import 'package:matrimony_flutter/Dependecies_import/auth_dependencies.dart';
 import 'package:matrimony_flutter/Userform/Submit_Pages/email_signup.dart';
+import 'package:matrimony_flutter/Userform/Submit_Pages/mobile_signup.dart';
 import 'package:matrimony_flutter/Userform/Submit_Pages/name_profilephoto.dart';
 import 'package:matrimony_flutter/Widgets/common_buttons.dart';
 
@@ -90,7 +91,7 @@ class _LaunchPageState extends State<LaunchPage> {
               Navigator.push(
                 context,
                 PageRouteBuilder(
-                    pageBuilder: (context,animation,secondaryAnimation) => EmailSignup(),
+                    pageBuilder: (context,animation,secondaryAnimation) => MobileSignup(),
                     transitionsBuilder:(context,animation,secondaryAnimation,child){
                       return FadeTransition(
                       child:child,

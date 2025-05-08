@@ -15,7 +15,7 @@ class _PasswordSignupState extends State<PasswordSignup> {
   Future<void> signup() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-
+      prefs.setString("passwordSignup", passwordController.text);
       await Auth().signUp(
         email: prefs.getString("emailSignup").toString(),
         password: passwordController.text,

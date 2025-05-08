@@ -113,7 +113,7 @@ class User {
   // }
 
   Future<void> addUser({required Map<String, dynamic> map}) async {
-    final url = Uri.parse("https://66a47a175dc27a3c1908fdc6.mockapi.io/yash");
+    final url = Uri.parse("http://192.168.51.147:3000/api/add");
 
     try{
 
@@ -169,13 +169,15 @@ class User {
   // }
 
   Future<List<Map<String, dynamic>>> getUserList() async{
-      final url = Uri.parse("https://66a47a175dc27a3c1908fdc6.mockapi.io/yash");
+      final url = Uri.parse("http://192.168.51.147:3000/api/get");
       try {
         final response = await http.get(url);
-
+        print(response );
+        print(":::::::::::::::::::::");
         List<Map<String, dynamic>> userList = [];
         if (response.statusCode == 200) {
-          final List<dynamic> data = json.decode(response.body);
+          final Map<String, dynamic> jsonResponse = json.decode(response.body);
+          final List<dynamic> data = jsonResponse['data'];
           print('Data fetched successfully: $data');
 
           for(int i =0; i<data.length; i++){
@@ -262,8 +264,11 @@ class User {
   //   return userId;
   // }
 
-  Future<void> updateUser({required Map<String, dynamic> map, required int id}) async {
-    final url = Uri.parse("https://66a47a175dc27a3c1908fdc6.mockapi.io/yash/$id");
+  Future<void> updateUser({required Map<String, dynamic> map, required String id}) async {
+    print(map);
+    print(id);
+
+    final url = Uri.parse("http://192.168.51.147:3000/api/update/$id");
 
     try{
 
@@ -295,7 +300,7 @@ class User {
       }
     }
 
-    final response = await http.put(
+    final response = await http.patch(
       url,
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(user),
@@ -339,7 +344,7 @@ class User {
 
   Future<void> deleteUser({required id}) async{
     print(":::$id:::::");
-    final url = Uri.parse("https://66a47a175dc27a3c1908fdc6.mockapi.io/yash/$id");
+    final url = Uri.parse("http://192.168.51.147:3000/api/delete/$id");
     try {
       final response = await http.delete(url);
 
