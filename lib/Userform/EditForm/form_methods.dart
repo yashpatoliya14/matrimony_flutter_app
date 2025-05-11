@@ -53,8 +53,6 @@ Widget getTextFormField({
         ),
         keyboardType: keyboardType,
 
-        textCapitalization: TextCapitalization.words,
-
         inputFormatters:inputFormator ?? [],
 
         validator: (value) {

@@ -1,5 +1,6 @@
+import 'package:matrimony_flutter/Authentication/complete_profile_detail_tree.dart';
+import 'package:matrimony_flutter/Authentication/user_controllers.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
-import 'package:matrimony_flutter/Userform/Submit_Pages/name_profilephoto.dart';
 import 'package:matrimony_flutter/launch_page.dart';
 
 class WidgetTree extends StatefulWidget {
@@ -17,8 +18,24 @@ class _WidgetTreeState extends State<WidgetTree> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data!.emailVerified) {
-
-            return Home();
+            String email = snapshot.data!.email ?? '';
+            return FutureBuilder<bool?>(
+              future: UserOperations().isProfileDetails(email: email),
+              builder: (context, profileSnapshot) {
+                print("::::::::::::::**${profileSnapshot.data}");
+                if (profileSnapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (profileSnapshot.hasData) {
+                  if(profileSnapshot.data!){
+                    return Home();
+                  }else{
+                    return CompleteProfileDetailTree(email:email);
+                  }
+                } else {
+                  return const Center(child: Text("Error checking profile"));
+                }
+              },
+            );
           } else {
             return VerifyEmailAddress();
           }
@@ -29,3 +46,4 @@ class _WidgetTreeState extends State<WidgetTree> {
     );
   }
 }
+

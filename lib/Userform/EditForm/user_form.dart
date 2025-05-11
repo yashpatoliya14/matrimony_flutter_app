@@ -1,3 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:matrimony_flutter/Authentication/user_controllers.dart';
+import 'package:matrimony_flutter/Authentication/user_model.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:intl/intl.dart';
 class UserForm extends StatefulWidget {
@@ -112,7 +115,7 @@ class _UserformState extends State<UserForm> {
                       controller: fullnameController,
                       label: 'Full name',
                       errorMsg: firstNameError,
-                      icon: Iconsax.message,
+                      icon: Iconsax.user,
                       validateFun: validateFirstName,
                     ),
                   ),
@@ -133,22 +136,22 @@ class _UserformState extends State<UserForm> {
                   ),
 
                   //mobile
-                  Container(
-                    width: screenWidth * 0.9,
-                    margin: EdgeInsets.all(screenWidth * 0.025),
-                    child: getTextFormField(
-                      controller: mobileController,
-                      label: 'Mobile',
-                      errorMsg: mobileError,
-                      validateFun: validateMobile,
-                      keyboardType: TextInputType.phone,
-                      inputFormator: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(10)
-                      ],
-                      icon: Iconsax.call
-                    ),
-                  ),
+                  // Container(
+                  //   width: screenWidth * 0.9,
+                  //   margin: EdgeInsets.all(screenWidth * 0.025),
+                  //   child: getTextFormField(
+                  //     controller: mobileController,
+                  //     label: 'Mobile',
+                  //     errorMsg: mobileError,
+                  //     validateFun: validateMobile,
+                  //     keyboardType: TextInputType.phone,
+                  //     inputFormator: [
+                  //       FilteringTextInputFormatter.digitsOnly,
+                  //       LengthLimitingTextInputFormatter(10)
+                  //     ],
+                  //     icon: Iconsax.call
+                  //   ),
+                  // ),
 
                   //password
                   Container(
@@ -446,42 +449,30 @@ class _UserformState extends State<UserForm> {
                       onPressed: () async {
 
                         if (_formkey.currentState?.validate() ?? false) {
-                          selectedHobbies = hobbiesData
+                            selectedHobbies = hobbiesData
                               .where((hobby) => hobby["isChecked"])
                               .map((hobby) => hobby["name"] as String)
                               .toList();
 
 
-                          final data = {
-                              FULLNAME: fullnameController.text,
+
+                              UserModel userModel = UserModel(
+                               FULLNAME: fullnameController.text,
                               EMAIL: emailController.text,
-                              MOBILE: mobileController.text,
                               PASSWORD: passwordController.text,
                               DOB: dobController.text,
                               GENDER: gender[selectedRadio!],
                               CITY: selectedCity,
-                              HOBBY: selectedHobbies,
+                              HOBBIES: selectedHobbies,
                               ISFAVORITE: isFavorite
-                            };
-
-                            if (widget.userDetail != null) {
-
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Save successful')),
                               );
-                               user.updateUser(map: data, id: widget.userDetail![ID]);
+                              UserOperations userOperations = UserOperations();
+                              await userOperations.updateUserByEmail(updatedData:userModel.toJson() , email: widget.userDetail![EMAIL])
+                              .then((value)=>{
+                                Navigator.pop(context,userModel.toJson())
+                              });
+                              
 
-                              data[ID] = widget.userDetail![ID];
-                              Navigator.pop(context,data);
-
-                            }
-                            else {
-                               user.addUser(map: data);
-                              Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Home(index: 0,)));
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Add successful')),
-                              );
-                            }
                             setState(() {
                               fullnameController.clear();
                               emailController.clear();

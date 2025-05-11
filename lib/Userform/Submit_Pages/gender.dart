@@ -1,3 +1,5 @@
+import 'package:matrimony_flutter/Authentication/user_controllers.dart';
+import 'package:matrimony_flutter/Authentication/user_model.dart';
 import 'package:matrimony_flutter/Userform/Submit_Pages/city.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 
@@ -131,11 +133,21 @@ class _NameProfilephotoState extends State<Gender> {
                     SharedPreferences prefs =
                     await SharedPreferences.getInstance();
 
-                    prefs.setString("gender", selectedRadio==1 ? "Female":"Male");
+                    UserModel userModel = UserModel(GENDER:  selectedRadio==1 ? "Female":"Male");
+                    UserOperations userOperations = UserOperations();
+                    userOperations.updateUserByEmail(email: prefs.getString("email").toString(), updatedData: userModel.toJson());
 
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context)=>City()));
+                        PageRouteBuilder(
+                            pageBuilder: (context,animation,secondaryAnimation) => City(),
+                            transitionsBuilder:(context,animation,secondaryAnimation,child){
+                              return FadeTransition(
+                                  child:child,
+                                  opacity:animation
+                              );
+                            }
+                        ));
                   }
               ),
             ],

@@ -1,24 +1,21 @@
 import 'package:matrimony_flutter/Userform/Submit_Pages/email.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 
-class MobileSignup extends StatefulWidget {
-  const MobileSignup({super.key});
+class Mobile extends StatefulWidget {
+  const Mobile({super.key});
 
   @override
-  State<MobileSignup> createState() => _MobileSignupState();
+  State<Mobile> createState() => _MobileState();
 }
 
-class _MobileSignupState extends State<MobileSignup> {
-  final GlobalKey<FormState> _formkeyOfMobileSignup = GlobalKey();
+class _MobileState extends State<Mobile> {
+  final GlobalKey<FormState> _formkeyOfMobile = GlobalKey();
 
-  
-
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
-        key: _formkeyOfMobileSignup,
+        key: _formkeyOfMobile,
         child: Column(
           children: [
             SizedBox(height: 150),
@@ -52,10 +49,10 @@ class _MobileSignupState extends State<MobileSignup> {
                 errorMsg: mobileError,
                 inputFormator: [
                   FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(10)
+                  LengthLimitingTextInputFormatter(10),
                 ],
                 onChanged: () {
-                  if (_formkeyOfMobileSignup.currentState?.validate() ?? true) {
+                  if (_formkeyOfMobile.currentState?.validate() ?? true) {
                     isDisplayFloatButton = true;
                     setState(() {});
                   } else {
@@ -66,22 +63,28 @@ class _MobileSignupState extends State<MobileSignup> {
               ),
             ),
             buildButton(
-                label: "Next",
-                textColor: Colors.white,
-                backgroundColor: Colors.purple,
-                icon: Icon(Iconsax.next, color: Colors.white),
-                onPressed: () async {
-                  SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
+              label: "Next",
+              textColor: Colors.white,
+              backgroundColor: Colors.purple,
+              icon: Icon(Iconsax.next, color: Colors.white),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
 
-                  prefs.setInt("mobileSignup", int.parse(mobileController.text));
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Email(isSignIn: false,)),
-
-                  );}
+                prefs.setInt("mobile", int.parse(mobileController.text));
+                Navigator.push(
+                  context,
+                    PageRouteBuilder(
+                        pageBuilder: (context,animation,secondaryAnimation) => Email(isSignIn: false,),
+                        transitionsBuilder:(context,animation,secondaryAnimation,child){
+                          return FadeTransition(
+                              child:child,
+                              opacity:animation
+                          );
+                        }
+                    )
+                );
+              },
             ),
-            
           ],
         ),
       ),

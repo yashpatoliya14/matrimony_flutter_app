@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:matrimony_flutter/Authentication/user_controllers.dart';
+import 'package:matrimony_flutter/Authentication/user_model.dart';
 import 'package:matrimony_flutter/User_Detail/user_detail.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 
@@ -114,20 +117,23 @@ Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,upd
                             child: IconButton(
                               onPressed: () async {
                                 if(searchController.text.isEmpty){
-
-
                                   favoriteUser(index,userList[index]);
-                                  await widget.user.updateUser(
-                                    map: userList[index],
-                                    id: userList[index][ID],
+                                  UserModel userModel = UserModel(ISFAVORITE: userList[index][ISFAVORITE]);
+                                  UserOperations userOperations =UserOperations();
+                                  
+                                  await userOperations.updateUserByEmail(
+                                    updatedData: userModel.toJson(),
+                                    email: userList[index][EMAIL],
                                   );
                                 }else{
 
-
+                                  UserModel userModel = UserModel(ISFAVORITE: !searchList[index][ISFAVORITE]);
+                                  UserOperations userOperations =UserOperations();
                                   favoriteUser(index,searchList[index]);
-                                  await widget.user.updateUser(
-                                    map: searchList[index],
-                                    id: searchList[index][ID],
+
+                                  await userOperations.updateUserByEmail(
+                                    updatedData: userModel.toJson(),
+                                    email: searchList[index][EMAIL],
                                   );
                                 }
 
@@ -136,7 +142,7 @@ Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,upd
 
 
                               icon: Icon((searchController.text.isEmpty ? userList[index][ISFAVORITE] : searchList[index][ISFAVORITE])? Icons.favorite : Icons.favorite_outline,
-                                  size: 20, color: (searchController.text.isEmpty ? userList[index][ISFAVORITE] : searchList[index][ISFAVORITE])? Colors.red : Colors.deepOrange),
+                                  size: 20, color: (searchController.text.isEmpty ? userList[index][ISFAVORITE]??true : searchList[index][ISFAVORITE])? Colors.red : Colors.deepOrange),
                               style: ButtonStyle(
                                 padding: WidgetStateProperty.all<EdgeInsets>(
                                     EdgeInsets.zero),
@@ -165,9 +171,11 @@ Widget getListItem(int index,userList,searchList,context,widget,favoriteUser,upd
                               ),
                             ),
                           ),
+
                           SizedBox(
                             width: 5,
                           ),
+
                           SizedBox(
                             width: 70,
                             height: 25,

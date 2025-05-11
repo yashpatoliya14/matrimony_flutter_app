@@ -10,21 +10,12 @@ class UserDetail extends StatefulWidget {
 }
 
 class _UserDetailState extends State<UserDetail> {
-  User user = User();
+  
   List<String> hobbies = [];
-
-  // Future<List<String>> _getUserHobbies() async {
-  //   return await user.getUserHobbies(userId: widget.data['UserId']);
-  // }
 
   @override
   void initState() {
     super.initState();
-    // _getUserHobbies().then((value) {
-    //   setState(() {
-    //     hobbies = value;
-    //   });
-    // });
   }
   final List<Color> appBarGradientColors = [Colors.red, Colors.purple.shade300];
 

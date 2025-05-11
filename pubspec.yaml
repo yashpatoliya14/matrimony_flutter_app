@@ -41,7 +41,14 @@ dependencies:
   font_awesome_flutter:
   share_plus:
   animations:
+  cloud_firestore:
+  image_picker:
+  flutter_spinkit:
+  mime:
+  path:
   intl:
+  http_parser:
+  permission_handler:
   sqflite:
   shared_preferences:
   shimmer:

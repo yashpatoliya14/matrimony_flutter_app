@@ -1,7 +1,9 @@
-
+import 'dart:convert';
+import 'package:matrimony_flutter/Authentication/auth.dart';
+import 'package:matrimony_flutter/Authentication/widget_tree.dart';
 import 'package:matrimony_flutter/Userform/Submit_Pages/email.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
-
+import 'package:http/http.dart' as http;
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -14,8 +16,6 @@ class _LoginPageState extends State<LoginPage> {
   bool isNewUser = false;
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
-
-  
 
   Future<void> signUp() async {
     try {
@@ -55,7 +55,6 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: Column(
             children: [
-
               //logo
               Image.asset("assets/login_signup_tree1.png", width: 100),
               SizedBox(height: 50),
@@ -75,20 +74,24 @@ class _LoginPageState extends State<LoginPage> {
                 label: "Continue with email",
                 textColor: Colors.white,
                 backgroundColor: Colors.purple,
-              onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Email(isSignIn: true)));
-                }
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                      PageRouteBuilder(
+                          pageBuilder: (context,animation,secondaryAnimation) => Email(isSignIn: true),
+                          transitionsBuilder:(context,animation,secondaryAnimation,child){
+                            return FadeTransition(
+                                child:child,
+                                opacity:animation
+                            );
+                          }
+                      )
+                  );
+                },
               ),
               SizedBox(height: 20),
 
-              ////continue with phone number
-              buildButton(
-                label: "Use phone number",
-                textColor: Colors.purple,
-                backgroundColor: const Color.fromRGBO(255, 255, 255, 0.302),
-                borderColor: Colors.black,
-                
-              ),
+
               SizedBox(height: 20),
 
               //divider ------------------------pending to seperate component
@@ -103,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Text(
-                      "or sign Up with",
+                      "or sign in with",
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
@@ -115,24 +118,36 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
 
+              SizedBox(height: 20),
 
               // google button
               buildButton(
-                label: isNewUser ? "Sign up with Google" : "Sign in with Google", 
+                label:"Sign in with Google",
                 textColor: Colors.black,
                 backgroundColor: Colors.white30,
-                icon: Image.asset("assets/google_image.jpg",height: 20,),
+                icon: Image.asset("assets/google_image.jpg", height: 20),
                 borderColor: Colors.black,
                 onPressed: () async {
-                  try{
-                   final userCredential = await Auth().signInWithGoogle();
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Home()));
-                  }catch(err){
-                      print(err);
+                  try {
+                    await Auth().signInWithGoogle();
+
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (context,animation,secondaryAnimation) => WidgetTree(),
+                          transitionsBuilder:(context,animation,secondaryAnimation,child){
+                            return FadeTransition(
+                                child:child,
+                                opacity:animation
+                            );
+                          }
+                      ),
+                    );
+                  } catch (err) {
+                    print(err);
                   }
-                }
+                },
               ),
             ],
           ),

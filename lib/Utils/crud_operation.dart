@@ -1,9 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:sqflite/sqflite.dart';
 import './standard.dart';
 
-class User {
+class UserCrud {
   static bool searchBarState = false;
   static List<Map<String, dynamic>> userList = [];
 
@@ -22,7 +21,7 @@ class User {
     user[PASSWORD] = map[PASSWORD];
     user[ISFAVORITE] = false;
     user[HOBBY] = map[HOBBY];
-
+    user[PROFILEPHOTO] = map[PROFILEPHOTO];
     if (map[DOB] != null) {
       List<String> dobParts = map[DOB].split('/');
       if (dobParts.length == 3) {

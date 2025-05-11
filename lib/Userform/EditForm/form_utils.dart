@@ -27,7 +27,7 @@ List<String> cities = [
   "kolakata"
 ];
 bool isDisplayFloatButton = false;
-User user = User();
+UserCrud userCrud = UserCrud();
 bool? ishidePass = true;
 bool? ishideConfirm = true;
 
@@ -58,7 +58,7 @@ bool? isFavorite;
 
 final List<Color> appBarGradientColors = [Colors.red, Colors.deepOrange.shade300];
 
-//all controllers
+//all controller
 TextEditingController fullnameController = TextEditingController();
 TextEditingController lastnameController = TextEditingController();
 TextEditingController emailController = TextEditingController();

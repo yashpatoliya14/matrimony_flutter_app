@@ -8,7 +8,6 @@ export 'package:matrimony_flutter/Authentication/auth.dart';
 export 'package:matrimony_flutter/Home/home.dart';
 export 'package:matrimony_flutter/Authentication/login_signup_tree.dart';
 export 'package:carousel_slider/carousel_slider.dart';
-export 'package:google_fonts/google_fonts.dart';
 export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:firebase_core/firebase_core.dart';
 export 'package:google_sign_in/google_sign_in.dart';

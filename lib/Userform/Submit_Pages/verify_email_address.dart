@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:matrimony_flutter/Authentication/user_controllers.dart';
+import 'package:matrimony_flutter/Authentication/user_model.dart';
 import 'package:matrimony_flutter/Authentication/widget_tree.dart';
+import 'package:matrimony_flutter/Userform/Submit_Pages/name_profilephoto.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
+import 'package:matrimony_flutter/launch_page.dart';
 
 class VerifyEmailAddress extends StatefulWidget {
   const VerifyEmailAddress({super.key});
@@ -10,35 +14,6 @@ class VerifyEmailAddress extends StatefulWidget {
 }
 
 class _VerifyEmailAddressState extends State<VerifyEmailAddress> {
-
-  void registerUser({
-    required FullName,
-    required Email,
-    required Mobile,
-    required Dob,
-    required Gender,
-    required City,
-    required Hobbies,
-    required Password,
-
-  }){
-    print(Mobile);
-    final data = {
-      FULLNAME: FullName,
-      EMAIL: Email,
-      MOBILE: Mobile,
-      PASSWORD: Password,
-      DOB: Dob,
-      GENDER: Gender,
-      CITY: City,
-      HOBBY: Hobbies,
-      ISFAVORITE: false,
-
-    };
-    user.addUser(map: data);
-
-  }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -55,26 +30,37 @@ class _VerifyEmailAddressState extends State<VerifyEmailAddress> {
     });
   }
 
-  void reload() {
-    FirebaseAuth.instance.currentUser!.reload().then((value) async {
-      SharedPreferences prefs =
-          await SharedPreferences.getInstance();
-      registerUser(
-        FullName: prefs.getString("name"),
-        Dob:prefs.getString("birthDate"),
-        Email:prefs.getString("emailSignup"),
-        Mobile:prefs.getInt("mobileSignup"),
-        Gender: prefs.getString("gender"),
-        Hobbies: prefs.getStringList("hobbies"),
-        City: prefs.getString("city"),
-        Password: prefs.getString("passwordSignup"),
+  void reload() async {
+    User? user = FirebaseAuth.instance.currentUser;
 
+    await user?.reload();
+    user = FirebaseAuth.instance.currentUser;
+
+    if (user != null && user.emailVerified) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("email",user.email.toString());
+      UserModel userModel = UserModel(ISVERIFIED: true,ISPROFILEDETAILS: false);
+      UserOperations userOperations = UserOperations();
+      userOperations.updateUserByEmail(
+        updatedData: userModel.toJson(),
+        email: user.email.toString(),
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => WidgetTree()),
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => NameProfilephoto(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(child: child, opacity: animation);
+          },
+        ),
       );
-    });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Email not verified yet. Please check your inbox."),
+        ),
+      );
+    }
   }
 
   @override
@@ -101,7 +87,6 @@ class _VerifyEmailAddressState extends State<VerifyEmailAddress> {
           ),
 
           SizedBox(height: 20),
-
         ],
       ),
       floatingActionButton: IconButton(

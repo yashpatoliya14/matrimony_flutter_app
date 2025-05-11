@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'package:matrimony_flutter/Authentication/user_controllers.dart';
+import 'package:matrimony_flutter/Home/drawer.dart';
+import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:matrimony_flutter/Home/about_page.dart';
@@ -5,11 +9,14 @@ import 'package:matrimony_flutter/Home/favoriteList.dart';
 import 'package:matrimony_flutter/Userform/EditForm/user_form.dart';
 import 'package:matrimony_flutter/Home/user_list.dart';
 import 'package:animations/animations.dart';
+import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:matrimony_flutter/launch_page.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../Authentication/auth.dart';
+import 'package:matrimony_flutter/Authentication/auth.dart';
+import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   final int index;
@@ -24,36 +31,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final User? user = Auth().currentUser;
 
-  Future<void> signOut() async {
-    await Auth().signOut();
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LaunchPage()),
-    );
-  }
-
-   List<dynamic>? details;
+ 
 
   @override
   void initState() {
     super.initState();
-    // Initialize activeIndex with widget.index if passed, else default to 0
-
     activeIndex = widget.index;
   }
 
-  Future<void> _getProfileDetails() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    details!.add(prefs.getString("name")?? "");
-    details!.add(prefs.getString("email")?? "");
-    details!.add(prefs.getString("gender")?? "");
-    details!.add(prefs.getString("city")?? "");
-    details!.add(prefs.getStringList("hobbies")?? "");
-
-  }
-
-
+  
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
@@ -111,25 +97,7 @@ class _HomeState extends State<Home> {
       ),
 
       drawer: SafeArea(
-        child: Drawer(
-          width: 300,
-          child: ListView(
-            children: [
-              DrawerHeader(child: Text(details?[0]!=null ? "${details?[0]}" : "")),
-              ListTile(title: Text(details?[1]!=null ? "${details?[1]}" : "")),
-              ListTile(title: Text(details?[2]!=null ? "${details?[2]}" : "")),
-              ListTile(title: Text(details?[3]!=null ? "${details?[3]}" : "")),
-              ListTile(title: Text(details?[4]!=null ? "${details?[4]}" : "")),
-              ListTile(title: Text((user?.email).toString())),
-              ElevatedButton(
-                onPressed: () {
-                  signOut();
-                },
-                child: Text("SignOut"),
-              ),
-            ],
-          ),
-        ),
+        child: getDrawer()
       ),
 
       body: PageTransitionSwitcher(

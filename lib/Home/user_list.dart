@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matrimony_flutter/Authentication/user_controllers.dart';
 import 'package:matrimony_flutter/Home/loader.dart';
 import 'package:matrimony_flutter/Userform/EditForm/user_form.dart';
 import 'package:matrimony_flutter/Utils/standard.dart';
@@ -9,7 +10,7 @@ import 'get_user_list_item.dart';
 
 
 class UserList extends StatefulWidget {
-  final User user = User();
+  final UserCrud user = UserCrud();
   bool search;
   UserList({super.key,required this.search});
 
@@ -104,8 +105,10 @@ class _UserListState extends State<UserList> {
   }
 
   Future<List<Map<String, dynamic>>> _getUserData() async {
+    UserOperations userOperations =UserOperations();
+
     if (userList.isEmpty || selectedCity != null || selectedGender != null ) {
-      userList = await widget.user.getUserList();
+      userList = await userOperations.getAllUsers();
       userList = userList.reversed.toList();
     }
 

@@ -1,3 +1,4 @@
+import 'package:matrimony_flutter/Userform/Submit_Pages/email.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:matrimony_flutter/Userform/Submit_Pages/name_profilephoto.dart';
 
@@ -85,10 +86,11 @@ class _LaunchPageState extends State<LaunchPage> {
             textColor: Colors.white,
             backgroundColor: Colors.purple,
             onPressed: () {
+
               Navigator.push(
                 context,
                 PageRouteBuilder(
-                    pageBuilder: (context,animation,secondaryAnimation) => NameProfilephoto(),
+                    pageBuilder: (context,animation,secondaryAnimation) => Email(isSignIn: false),
                     transitionsBuilder:(context,animation,secondaryAnimation,child){
                       return FadeTransition(
                       child:child,

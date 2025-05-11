@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:matrimony_flutter/Authentication/user_controllers.dart';
+import 'package:matrimony_flutter/Authentication/user_model.dart';
 import 'package:matrimony_flutter/Home/loader.dart';
 import 'package:matrimony_flutter/User_Detail/user_detail.dart';
 import 'package:matrimony_flutter/Utils/standard.dart';
@@ -14,10 +16,7 @@ class Favoritelist extends StatefulWidget {
 }
 
 class _UserListState extends State<Favoritelist> {
-  User user = User();
-
-  // List<Map<String, dynamic>> searchList = [];
-  // TextEditingController search = TextEditingController();
+  
 
   List<Map<String, dynamic>> userList=[];
   List<Map<String, dynamic>> favoriteList=[];
@@ -28,8 +27,10 @@ class _UserListState extends State<Favoritelist> {
   }
 
   Future<List<Map<String, dynamic>>> _getUserData() async {
+    UserOperations userOperations =UserOperations();
     if(userList.isEmpty){
-        userList = await user.getUserList();
+
+        userList = await userOperations.getAllUsers();
         favoriteList.clear();
     }
     favoriteList.clear();
@@ -51,7 +52,6 @@ class _UserListState extends State<Favoritelist> {
         //temp search
         Padding(
           padding: const EdgeInsets.all(8.0),
-          // child: isSearchBarHide(),
         ),
 
         //list of favorite users
@@ -193,11 +193,13 @@ class _UserListState extends State<Favoritelist> {
                                   favoriteList[index][ISFAVORITE] = !favoriteList[index][ISFAVORITE] ;
 
                                 });
-                                await user.updateUser(
-                                  map: favoriteList[index],
-                                  id: favoriteList[index][ID],
-                                );
+                                UserModel userModel = UserModel(ISFAVORITE: !favoriteList[index][ISFAVORITE]);
+                                  UserOperations userOperations =UserOperations();
 
+                                  await userOperations.updateUserByEmail(
+                                    updatedData: userModel.toJson(),
+                                    email: favoriteList[index][EMAIL],
+                                  );
 
                               },
 
