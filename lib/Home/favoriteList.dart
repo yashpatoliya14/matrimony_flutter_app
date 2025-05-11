@@ -4,11 +4,10 @@ import 'package:matrimony_flutter/Authentication/user_controllers.dart';
 import 'package:matrimony_flutter/Authentication/user_model.dart';
 import 'package:matrimony_flutter/Home/loader.dart';
 import 'package:matrimony_flutter/User_Detail/user_detail.dart';
-import 'package:matrimony_flutter/Utils/standard.dart';
-import '../../Utils/crud_operation.dart';
+import 'package:matrimony_flutter/Authentication/standard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Favoritelist extends StatefulWidget {
-
   const Favoritelist({super.key});
 
   @override
@@ -16,90 +15,92 @@ class Favoritelist extends StatefulWidget {
 }
 
 class _UserListState extends State<Favoritelist> {
-  
-
-  List<Map<String, dynamic>> userList=[];
-  List<Map<String, dynamic>> favoriteList=[];
-
+  List<Map<String, dynamic>> userList = [];
+  List<Map<String, dynamic>> favoriteList = [];
+  List<String> favList = [];
   @override
   void initState() {
     super.initState();
   }
 
   Future<List<Map<String, dynamic>>> _getUserData() async {
-    UserOperations userOperations =UserOperations();
-    if(userList.isEmpty){
+  final prefs = await SharedPreferences.getInstance();
+  final userOperations = UserOperations();
 
-        userList = await userOperations.getAllUsers();
-        favoriteList.clear();
+  final String? currentEmail = prefs.getString(EMAIL);
+  print(currentEmail);
+  if (currentEmail == null) return [];
+  userList = await userOperations.getAllUsers();
+  final userData = await userOperations.getUserByEmail(email: currentEmail);
+  final List<String> favoriteListEmail = List<String>.from(userData?[FAVORITELIST] ?? []);
+
+  for (var user in userList) {
+    if(favoriteListEmail.contains(user[EMAIL])){
+      favoriteList.add(user);
     }
-    favoriteList.clear();
-    for (var user in userList) {
-      if (user[ISFAVORITE]) {
-        favoriteList.add(user);
-      }
-    }
-
-
-    return favoriteList;
   }
+  favList =favoriteListEmail;
+  return favoriteList;
+}
+
+
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-
         //temp search
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-        ),
+        Padding(padding: const EdgeInsets.all(8.0)),
 
         //list of favorite users
         Expanded(
-
-          child: FutureBuilder<List<Map<String, dynamic>>>(future: _getUserData(), builder: (context,snapshot){
-
-            if(snapshot.hasData){
-              return ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return getListItem(index);
-                },
-                itemCount: favoriteList.length,
-              );
-            }else if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingWidget();
-            } else {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            }
-          }),
-
-        )
+          child: FutureBuilder<List<Map<String, dynamic>>>(
+            future: _getUserData(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return getListItem(index);
+                  },
+                  itemCount: favoriteList.length,
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return LoadingWidget();
+              } else {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              }
+            },
+          ),
+        ),
       ],
     );
   }
 
   Widget getListItem(int index) {
-    final currentList = favoriteList ;
+    final currentList = favoriteList;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
 
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           Navigator.of(context).push(
             PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => UserDetail(data: favoriteList[index]),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
+              pageBuilder:
+                  (context, animation, secondaryAnimation) =>
+                      UserDetail(data: favoriteList[index]),
+              transitionsBuilder: (
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ) {
+                return FadeTransition(opacity: animation, child: child);
               },
             ),
           );
         },
         child: Container(
-
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 0.15,
           decoration: BoxDecoration(
@@ -112,23 +113,17 @@ class _UserListState extends State<Favoritelist> {
           ),
 
           child: Row(
-
             children: [
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   radius: 35,
                   backgroundColor: Colors.white38,
-                  child: const Icon(
-                    Icons.person,
-                    size: 35,
-                  ),
+                  child: const Icon(Icons.person, size: 35),
                 ),
               ),
 
               Expanded(
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
 
@@ -137,7 +132,6 @@ class _UserListState extends State<Favoritelist> {
                     mainAxisAlignment: MainAxisAlignment.center,
 
                     children: [
-
                       //fullname
                       Row(
                         children: [
@@ -146,10 +140,15 @@ class _UserListState extends State<Favoritelist> {
                             child: Text(
                               currentList[index][FULLNAME],
                               style: GoogleFonts.nunito(
-                              fontSize: 20, color: Colors.purple.shade400),
+                                fontSize: 20,
+                                color: Colors.purple.shade400,
+                              ),
                             ),
                           ),
-                          const Icon(Icons.arrow_forward_ios, color: Colors.purple),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.purple,
+                          ),
                         ],
                       ),
 
@@ -189,35 +188,74 @@ class _UserListState extends State<Favoritelist> {
                             height: 25,
                             child: IconButton(
                               onPressed: () async {
-                                setState(() {
-                                  favoriteList[index][ISFAVORITE] = !favoriteList[index][ISFAVORITE] ;
+                                SharedPreferences preferences =
+                                        await SharedPreferences.getInstance();
+                                    UserOperations userOperations =
+                                        UserOperations();
 
-                                });
-                                UserModel userModel = UserModel(ISFAVORITE: !favoriteList[index][ISFAVORITE]);
-                                  UserOperations userOperations =UserOperations();
+                                    // Get logged-in user data
+                                    Map<String, dynamic>? person =
+                                        await userOperations.getUserByEmail(
+                                          email:
+                                              preferences
+                                                  .getString("email")
+                                                  .toString(),
+                                        );
 
-                                  await userOperations.updateUserByEmail(
-                                    updatedData: userModel.toJson(),
-                                    email: favoriteList[index][EMAIL],
-                                  );
+                                    if (person != null) {
+                                      List<String> favoriteListEmail = List<String>.from(
+                                        person[FAVORITELIST] ?? [],
+                                      );
+                                      String selectedEmail =
+                                          favoriteList[index][EMAIL];
 
+                                      // Toggle logic
+                                      if (favList.contains(
+                                        favoriteList[index][EMAIL],
+                                      )) {
+                                        favoriteListEmail.remove(selectedEmail);
+                                        favList.remove(selectedEmail);
+                                        setState(() {
+                                          
+                                        });
+                                      } else {
+                                        favoriteListEmail.add(selectedEmail);
+                                        favList.add(selectedEmail);
+                                        setState(() {
+                                          
+                                        });
+                                      }
+
+                                      UserModel updatedUser = UserModel(
+                                        FAVORITELIST: favoriteListEmail,
+                                      );
+
+                                      await userOperations.updateUserByEmail(
+                                        updatedData: updatedUser.toJson(),
+                                        email:
+                                            preferences
+                                                .getString("email")
+                                                .toString(),
+                                      );
+                                    }
                               },
 
                               icon: Icon(
-                                favoriteList[index][ISFAVORITE]
+                                favList.contains(favoriteList[index][EMAIL])
                                     ? Icons.favorite
                                     : Icons.favorite_outline,
                                 size: 20,
                                 color: Colors.red,
                               ),
                               style: ButtonStyle(
-                                padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+                                padding: WidgetStateProperty.all<EdgeInsets>(
+                                  EdgeInsets.zero,
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
-
                     ],
                   ),
                 ),
@@ -263,4 +301,3 @@ class _UserListState extends State<Favoritelist> {
   //   }
   // }
 }
-

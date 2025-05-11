@@ -43,10 +43,10 @@ class _UserDetailState extends State<UserDetail> {
                         child: CircleAvatar(
                           radius: 60,
                           backgroundColor: Colors.purple.shade100,
-                          backgroundImage: widget.data['profilePicture'] != null
-                              ? NetworkImage(widget.data['profilePicture'])
+                          backgroundImage: widget.data['profilePhoto'] != null
+                              ? NetworkImage(widget.data['profilePhoto'])
                               : null,
-                          child: widget.data['profilePicture'] == null
+                          child: widget.data['profilePhoto'] == null
                               ? const Icon(Icons.person, size: 60, color: Colors.white)
                               : null,
                         ),
@@ -67,7 +67,6 @@ class _UserDetailState extends State<UserDetail> {
                             children: [
                               _buildUserInfo(Icons.person, "Name", widget.data[FULLNAME] ?? widget.data['name'] ?? 'N/A'),
                               _buildUserInfo(Icons.email, "Email", widget.data[EMAIL] ?? 'N/A'),
-                              _buildUserInfo(Icons.phone, "Mobile", widget.data[MOBILE]?.toString() ?? 'N/A'),
                               _buildUserInfo(Icons.location_city, "City", widget.data[CITY] ?? 'N/A'),
                               _buildUserInfo(Icons.cake, "Date of Birth", widget.data[DOB] ?? 'N/A'),
                               _buildUserInfo(

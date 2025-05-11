@@ -1,8 +1,7 @@
 export 'package:flutter/material.dart';
 export 'package:flutter/services.dart';
 export 'package:google_fonts/google_fonts.dart';
-export 'crud_operation.dart';
-export './standard.dart';
+export 'package:matrimony_flutter/Authentication/standard.dart';
 export 'package:matrimony_flutter/Userform/Submit_Pages/verify_email_address.dart';
 export 'package:matrimony_flutter/Authentication/auth.dart';
 export 'package:matrimony_flutter/Home/home.dart';
@@ -19,5 +18,4 @@ export 'package:matrimony_flutter/Userform/Submit_Pages/forgot_password.dart';
 export 'package:iconic/iconic.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:get/get.dart';
-export '';
 export 'package:matrimony_flutter/Widgets/common_buttons.dart';

@@ -13,6 +13,7 @@ class UserModel {
   final bool? ISVERIFIED;
   final String? USERNAME;
   final bool? ISPROFILEDETAILS;
+  final List<String>? FAVORITELIST;
   UserModel({
       this.USERNAME,
       this.ISVERIFIED,
@@ -27,7 +28,8 @@ class UserModel {
      this.ISFAVORITE,
      this.AGE,
      this.PROFILEPHOTO,
-    this.ISPROFILEDETAILS
+    this.ISPROFILEDETAILS,
+    this.FAVORITELIST
   });
 
   Map<String, dynamic> toJson() {
@@ -45,6 +47,7 @@ class UserModel {
       if (AGE != null) 'age': AGE,
       if (PROFILEPHOTO != null) 'profilePhoto': PROFILEPHOTO,
       if (ISPROFILEDETAILS != null) 'isProfileDetails': ISPROFILEDETAILS,
+      if (FAVORITELIST !=null) 'favoriteList' : FAVORITELIST
     };
   }
 

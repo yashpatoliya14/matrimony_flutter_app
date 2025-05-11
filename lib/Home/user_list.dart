@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:matrimony_flutter/Authentication/user_controllers.dart';
 import 'package:matrimony_flutter/Home/loader.dart';
 import 'package:matrimony_flutter/Userform/EditForm/user_form.dart';
-import 'package:matrimony_flutter/Utils/standard.dart';
-import '../../Utils/crud_operation.dart';
+import 'package:matrimony_flutter/Authentication/standard.dart';
+import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'search_bar.dart';
 import 'app_bar.dart';
-import 'get_user_list_item.dart';
+import 'get_list_item.dart';
 
 
 class UserList extends StatefulWidget {
-  final UserCrud user = UserCrud();
   bool search;
   UserList({super.key,required this.search});
 
@@ -19,14 +18,16 @@ class UserList extends StatefulWidget {
 }
 
 class _UserListState extends State<UserList> {
+
+//utils
   List<Map<String, dynamic>> searchList = [];
   List<Map<String, dynamic>> userList = [];
-  List<Map<String,dynamic>> filteredUsers = [];
-  List<double> _scaleFactors = [];
   List<String> cities = [];
   String? selectedCity;
   String? selectedGender;
+  List<String> favList = [];
 
+//methods
   void changeStateOfSearchBar(){
     setState(() {
       isSearchBar = false;
@@ -50,71 +51,48 @@ class _UserListState extends State<UserList> {
         updatedUser[ISFAVORITE] = !updatedUser[ISFAVORITE] ;
 
       });
-
   }
 
-  void updateUser(index){
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => UserForm(userDetail: searchController.text.isEmpty ? userList[index] : searchList[index],isAppBar: true,),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-      ),
-    ).then((value){
-      if (value != null) {
-        // Find the user in userList and searchList by ID and update them
-        final userId = value[ID];
-        final userIndex = userList.indexWhere((user) => user[ID] == userId);
-        if (userIndex != -1) {
-          setState(() {
-            userList[userIndex] = value;
-          });
-        }
-        final searchIndex = searchList.indexWhere((user) => user[ID] == userId);
-        if (searchIndex != -1) {
-          setState(() {
-            searchList[searchIndex] = value;
-          });
+  Future<List<Map<String, dynamic>>> _getUserData() async {
+  UserOperations userOperations = UserOperations();
+  final currentUserEmail = Auth().currentUser?.email;
+
+  if (currentUserEmail == null) return [];
+
+  if (userList.isEmpty || selectedCity != null || selectedGender != null) {
+    final allUsers = await userOperations.getAllUsers();
+    List<Map<String, dynamic>> filteredUsers = [];
+
+    for (var user in allUsers) {
+      // Set favList for current user
+      if (user[EMAIL] == currentUserEmail) {
+        favList = List<String>.from(user[FAVORITELIST] ?? []);
+        print("$favList **************");
+        continue; // Skip adding current user to visible list
+      }
+
+      // Filter others based on profile and selected filters
+      if (user[ISPROFILEDETAILS] == true) {
+        bool matchesCity = selectedCity == null || user[CITY] == selectedCity;
+        bool matchesGender = selectedGender == null || user[GENDER] == selectedGender;
+
+        if (matchesCity && matchesGender) {
+          filteredUsers.add(user);
         }
       }
-    });
+    }
+
+    userList = filteredUsers.reversed.toList(); // Show newest users first
   }
 
-  void deleteUser(index) async{
-    final userToDelete = searchController.text.isEmpty
-        ? userList[index]
-        : searchList[index];
-    final userId = userToDelete[ID];
+  return userList;
+}
 
-    Navigator.pop(context);
-    await widget.user.deleteUser(id: userId);
-
-    userList.removeWhere((user) => user[ID] == userId);
-    searchList.removeWhere((user) => user[ID] == userId);
-
-    if (mounted) setState(() {});
-  }
 
   @override
   void initState() {
     super.initState();
   }
-
-  Future<List<Map<String, dynamic>>> _getUserData() async {
-    UserOperations userOperations =UserOperations();
-
-    if (userList.isEmpty || selectedCity != null || selectedGender != null ) {
-      userList = await userOperations.getAllUsers();
-      userList = userList.reversed.toList();
-    }
-
-    return userList; // Apply filters to cached data
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -129,10 +107,9 @@ class _UserListState extends State<UserList> {
               future: _getUserData(),
               builder: (context, snapshot) {
                  if (snapshot.hasData) {
-                  _scaleFactors = List.filled(userList.length, 1.0);
                   return ListView.builder(
                     itemBuilder: (BuildContext context, int index) {
-                      return getListItem(index,userList,searchList,context,widget,favoriteUser,updateUser,deleteUser);
+                      return GetListItem(index: index,userList: userList,searchList: searchList,favList: favList);
                     },
                     itemCount: searchController.text.isEmpty
                         ? userList.length

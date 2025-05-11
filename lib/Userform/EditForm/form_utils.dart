@@ -1,7 +1,5 @@
 //region hobbies List
 import 'package:flutter/material.dart';
-import 'package:matrimony_flutter/Utils/crud_operation.dart';
-
 final List<Map<String, dynamic>> hobbiesData = [
   {"name": "Cricket", "isChecked": false},
   {"name": "Reading", "isChecked": false},
@@ -27,7 +25,6 @@ List<String> cities = [
   "kolakata"
 ];
 bool isDisplayFloatButton = false;
-UserCrud userCrud = UserCrud();
 bool? ishidePass = true;
 bool? ishideConfirm = true;
 

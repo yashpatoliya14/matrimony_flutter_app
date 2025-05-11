@@ -12,3 +12,5 @@ const String AGE = 'age';
 const String PROFILEPHOTO = 'profilePhoto';
 const String ISVERIFIED = 'isVerified';
 const String USERNAME = 'username';
+const String ISPROFILEDETAILS = 'isProfileDetails';
+const String FAVORITELIST = 'favoriteList';
