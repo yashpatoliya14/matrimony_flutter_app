@@ -24,7 +24,6 @@ class _CompleteProfileDetailTreeState extends State<CompleteProfileDetailTree> {
     return FutureBuilder<String?>(
         future: userOperations.checkUnfillDetail(email: widget.email),
         builder: (context, snapshot) {
-          print("${snapshot.data}******************");
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasData) {
@@ -46,7 +45,7 @@ class _CompleteProfileDetailTreeState extends State<CompleteProfileDetailTree> {
           } else if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));
           } else {
-            return const Center(child: Text("Unexpected state"));
+            return Home();
           }
         }
     );

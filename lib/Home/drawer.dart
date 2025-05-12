@@ -60,6 +60,7 @@ class _getDrawerState extends State<getDrawer> {
                     radius: 50,
                     backgroundImage: NetworkImage(
                       profileData['profilePhoto'] ?? '',
+                      scale: 1
                     ),
                     backgroundColor: Colors.grey[200],
                   ),

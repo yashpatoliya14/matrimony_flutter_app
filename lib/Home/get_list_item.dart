@@ -83,7 +83,8 @@ class _GetListItemState extends State<GetListItem> {
                   child: CircleAvatar(
                     radius: 35,
                     backgroundColor: Colors.white38,
-                    child: const Icon(Icons.person, size: 35),
+                    backgroundImage: NetworkImage(currentList[index][PROFILEPHOTO] ?? "",scale: 1),
+                    
                   ),
                 ),
                 Expanded(
@@ -309,6 +310,7 @@ class _GetListItemState extends State<GetListItem> {
                                           secondaryAnimation,
                                         ) => ChatScreen(
                                           receiverId: userList[index][ID],
+                                          receiverName: userList[index][FULLNAME],
                                         ),
                                     transitionsBuilder: (
                                       context,

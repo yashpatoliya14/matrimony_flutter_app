@@ -1,44 +1,57 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:matrimony_flutter/Chat/chat_model.dart';
+import 'package:matrimony_flutter/Authentication/user_controllers.dart';
+import 'package:matrimony_flutter/Utils/importFiles.dart';
 
 class ChatService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  /// Generates a consistent chat ID for two users.
   String getChatId(String uid1, String uid2) {
-    return uid1.compareTo(uid2) < 0 ? '$uid1\_$uid2' : '$uid2\_$uid1';
+    return uid1.compareTo(uid2) <= 0 ? '$uid1\_$uid2' : '$uid2\_$uid1';
   }
 
-  Stream<QuerySnapshot> getMessages(String receiverId) {
-    final userId = auth.currentUser!.uid;
-
-    String chatId = getChatId(userId, receiverId);
-
-    return _firestore
-        .collection('messages')
-        .doc(chatId)
-        .collection('chats')
-        .orderBy('timestamp')
-        .snapshots();
-  }
-
+  /// Sends a text message to [receiverId].
   Future<void> sendMessage(String receiverId, String text) async {
-  final senderId = auth.currentUser!.uid;
-  String chatId = getChatId(senderId, receiverId);
-
-  ChatModel chatModel = ChatModel(
-    SEDNERID: senderId,
-    RECIEVERID: receiverId,
-    TEXT: text,
-    TIMESTAMP: FieldValue.serverTimestamp(),
-  );
-
-  // ✅ Save to structured subcollection only
-  await _firestore
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    UserOperations userOperations = UserOperations();
+    final userData =await userOperations.getUserByEmail(email: prefs.getString(EMAIL).toString());
+    final senderId = userData![ID];
+    final chatId = getChatId(senderId, receiverId);
+    print("::::receiverID $receiverId");
+    print("::::senderID $senderId");
+    print("::::chatID $chatId");
+    print("::::chatID ${auth.currentUser!.email}");
+    await firestore
       .collection('messages')
       .doc(chatId)
       .collection('chats')
-      .add(chatModel.toJson());
-}
+      .add({
+        'senderId': senderId,
+        'receiverId': receiverId,
+        'text': text,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+  }
 
+  /// Streams all messages for the chat with [receiverId], ordered by time.
+  Future<Stream<QuerySnapshot<Object>>>? getMessages(String receiverId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    UserOperations userOperations = UserOperations();
+    final userData =await userOperations.getUserByEmail(email: prefs.getString(EMAIL).toString());
+    final userId = userData![ID];
+    final chatId = getChatId(userId, receiverId);
+    print("::::receiverID $receiverId");
+    print("::::userID $userId");
+    print("::::chatID $chatId");
+    print("::::chatID ${auth.currentUser!.email}");
+
+    return firestore
+      .collection('messages')
+      .doc(chatId)
+      .collection('chats')
+      .orderBy('timestamp', descending: true)
+      .snapshots();
+  }
 }

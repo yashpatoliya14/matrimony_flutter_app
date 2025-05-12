@@ -93,16 +93,23 @@ class UserOperations {
         .get();
 
     if (query.docs.isNotEmpty) {
-      // Get the first matching document
-      final data = query.docs.first.data() ;
+    // Grab the first matching document
+    final docSnap = query.docs.first;
 
-      print("::::::::::::$data");
-      return data;
-      print('✅ Data get for: $email');
-    } else {
-      print('❌ No user found with email: $email');
-      return null;
-    }
+    // Extract its ID…
+    final docId = docSnap.id;
+    // …and its data map
+    final data = docSnap.data();
+
+    // For convenience, you can add the ID into the map
+    data[ID] = docId;
+
+    print("Fetched user (ID: $docId): $data");
+    return data;
+  } else {
+    print('No user found with email: $email');
+    return null;
+  }
   }
   Future<bool?> checkUserByEmail({
     required String email,
@@ -135,7 +142,7 @@ Future<List<Map<String,dynamic>>> getAllUsers() async {
       final data = query.docs.map(
         (doc){
           final user = doc.data();
-          user['id']=doc.id;
+          user[ID]=doc.id;
           return user;
           }).toList() ;
 

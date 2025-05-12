@@ -32,7 +32,7 @@ class _WidgetTreeState extends State<WidgetTree> {
                     return CompleteProfileDetailTree(email:email);
                   }
                 } else {
-                  return const Center(child: Text("Error checking profile"));
+                  return CompleteProfileDetailTree(email: email);
                 }
               },
             );
