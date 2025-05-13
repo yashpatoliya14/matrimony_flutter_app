@@ -35,23 +35,10 @@
 
 ## 📱 App Screenshots
 
-### 🔹 Launch Screen
-![Home Screen](assets/demo/Launch.jpg)
+### 🔹 Screens
+![Screens](assets/demo/1.jpg)
 
-### 🔹 Chat Screen
-![Chat Screen](assets/demo/chat.jpg)
-
-### 🔹 Upload profile image Screen
-![Profile Screen](assets/demo/profileImage.jpg)
-
-### 🔹 Gender Screen
-![Gender Screen](assets/demo/gender.jpg)
-
-### 🔹 Home Screen
-![Home Screen](assets/demo/home.jpg)
-
-### 🔹 Login Screen
-![Login Screen](assets/demo/auth1.jpg)
+![Screens](assets/demo/2.jpg)
 
 ## 🙌 Contribution
 
