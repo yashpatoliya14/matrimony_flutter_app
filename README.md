@@ -42,7 +42,7 @@
 
 ## Download now !
 
-![Download apk]([apk/app-release.apk](https://github.com/yashpatoliya14/soulmate_hub_flutter_app/blob/main/apk/app-release.apk))
+![Download apk](apk/app-release.apk)
 
 ## 🙌 Contribution
 
