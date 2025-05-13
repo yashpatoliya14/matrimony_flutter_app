@@ -40,6 +40,10 @@
 
 ![Screens](assets/demo/2.jpg)
 
+## Download now !
+
+![APK](apk/app-release.apk)
+
 ## 🙌 Contribution
 
 Want to improve this app? Contributions are welcome!
