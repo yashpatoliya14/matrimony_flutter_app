@@ -52,4 +52,5 @@ Want to improve this app? Contributions are welcome!
 
 ## 📧 Contact
 Created with ❤️ by yash patoliya
-📧 yashpatoliya14@gmail.com
+
+##📧 yashpatoliya14@gmail.com
