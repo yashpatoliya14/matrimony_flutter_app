@@ -39,9 +39,7 @@ class _UserformState extends State<UserForm> {
 
       fullnameController.text = widget.userDetail?[FULLNAME] ?? '';
       emailController.text = widget.userDetail?[EMAIL] ?? '';
-      mobileController.text = widget.userDetail?[MOBILE].toString() ?? '';
       passwordController.text = widget.userDetail?[PASSWORD] ?? '';
-      confirmPasswordController.text = widget.userDetail?[PASSWORD] ?? '';
       dobController.text = widget.userDetail?[DOB] ?? '';
       selectedRadio = widget.userDetail?[GENDER] == "Male" ? 0 : 1;
       selectedCity = widget.userDetail?[CITY] ?? cities[0];
@@ -87,7 +85,7 @@ class _UserformState extends State<UserForm> {
 
       appBar: widget.isAppBar ? PreferredSize(
           preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.08),
-          child: getAppBar(context,name: "Register")
+          child: getAppBar(context,name: "Register",isDrawer: false)
       ): null,
 
 
@@ -152,45 +150,6 @@ class _UserformState extends State<UserForm> {
                   //     icon: Iconsax.call
                   //   ),
                   // ),
-
-                  //password
-                  Container(
-                    width: screenWidth * 0.9,
-                    margin: EdgeInsets.all(screenWidth * 0.025),
-                    child: getTextFormField(
-                      controller: passwordController,
-                      label: "Password",
-                      errorMsg: passwordError,
-                      icon: Iconsax.password_check,
-                      hideText: ishidePass!,
-                      suffixIcon:IconButton(onPressed: (){
-                        setState(() {
-                          ishidePass=!ishidePass!;
-                        });
-                      }, icon: ishidePass!?Icon( Icons.remove_red_eye):Icon( Icons.visibility_off)
-                  ),
-                      validateFun: validatePassword,
-                    ),
-                  ),
-
-                  //confirm password
-                  Container(
-                    width: screenWidth * 0.9,
-                    margin: EdgeInsets.all(screenWidth * 0.025),
-                    child: getTextFormField(
-                      controller: confirmPasswordController,
-                      icon: Iconsax.password_check,
-                      suffixIcon:IconButton(onPressed: (){
-                        setState(() {
-                          ishideConfirm=!ishideConfirm!;
-                        });
-                      }, icon: ishideConfirm!? Icon( Icons.remove_red_eye): Icon( Icons.visibility_off)),
-                      hideText: ishideConfirm!,
-                      label: "Confirm Password",
-                      errorMsg: confirmPasswordError,
-                      validateFun: validateConfirmPassword,
-                    ),
-                  ),
 
                   Container(
                     width: screenWidth * 0.9,
@@ -464,7 +423,6 @@ class _UserformState extends State<UserForm> {
                               GENDER: gender[selectedRadio!],
                               CITY: selectedCity,
                               HOBBIES: selectedHobbies,
-                              ISFAVORITE: isFavorite
                               );
                               UserOperations userOperations = UserOperations();
                               await userOperations.updateUserByEmail(updatedData:userModel.toJson() , email: widget.userDetail![EMAIL])

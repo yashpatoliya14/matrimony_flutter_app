@@ -1,23 +1,11 @@
-import 'dart:convert';
-import 'package:matrimony_flutter/Authentication/user_controllers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:matrimony_flutter/Home/about_page.dart';
 import 'package:matrimony_flutter/Home/drawer.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
-import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:matrimony_flutter/Home/about_page.dart';
 import 'package:matrimony_flutter/Home/favoriteList.dart';
 import 'package:matrimony_flutter/Userform/EditForm/user_form.dart';
 import 'package:matrimony_flutter/Home/user_list.dart';
 import 'package:animations/animations.dart';
-import 'package:matrimony_flutter/Utils/importFiles.dart';
-import 'package:matrimony_flutter/launch_page.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'app_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:matrimony_flutter/Authentication/auth.dart';
-import 'package:http/http.dart' as http;
-
 class Home extends StatefulWidget {
   final int index;
 
@@ -44,8 +32,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final List<Widget> pages = [
       UserList(search: isSearchBar),
-      UserForm(isAppBar: false),
       Favoritelist(),
+      AboutPage()
     ];
     void onClickSearchBar() {
       setState(() {
@@ -63,7 +51,7 @@ class _HomeState extends State<Home> {
         child: getAppBar(
           context,
           onClickSearchBar: onClickSearchBar,
-          name: "Matrimony",
+          name: "Soulmate Hub",
           actionsList: [
             IconButton(
               onPressed: () {
@@ -72,26 +60,7 @@ class _HomeState extends State<Home> {
               icon: const Icon(Iconsax.search_normal, color: Colors.white),
               iconSize: 25,
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  PageRouteBuilder(
-                    pageBuilder:
-                        (context, animation, secondaryAnimation) => AboutPage(),
-                    transitionsBuilder: (
-                      context,
-                      animation,
-                      secondaryAnimation,
-                      child,
-                    ) {
-                      return FadeTransition(opacity: animation, child: child);
-                    },
-                  ),
-                );
-              },
-              icon: const Icon(Iconsax.info_circle, color: Colors.white),
-              iconSize: 25,
-            ),
+            
           ],
         ),
       ),
@@ -125,8 +94,8 @@ class _HomeState extends State<Home> {
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(icon: Icon(Iconsax.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Iconsax.user_add), label: 'Add'),
           BottomNavigationBarItem(icon: Icon(Iconsax.heart), label: 'Favorite'),
+          BottomNavigationBarItem(icon: Icon(Iconsax.info_circle), label: 'About'),
         ],
       ),
     );

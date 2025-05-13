@@ -5,7 +5,6 @@ import 'package:matrimony_flutter/Userform/EditForm/form_utils.dart';
 import 'package:matrimony_flutter/Authentication/standard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:matrimony_flutter/give_backend_url.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 class Auth{
@@ -104,6 +103,6 @@ class Auth{
     //create user into database
     userOperations.createUser(data: userModel);
   }
-
+  
 
 }

@@ -50,7 +50,7 @@ class _LaunchPageState extends State<LaunchPage> {
                   _currentPage = value;
                 });
               },
-              autoPlayCurve: Curves.easeInBack,
+              autoPlayCurve: Curves.ease,
               autoPlayAnimationDuration: Duration(seconds: 1),
               initialPage: 0,
               autoPlay: true,
@@ -87,18 +87,8 @@ class _LaunchPageState extends State<LaunchPage> {
             backgroundColor: Colors.purple,
             onPressed: () {
 
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                    pageBuilder: (context,animation,secondaryAnimation) => Email(isSignIn: false),
-                    transitionsBuilder:(context,animation,secondaryAnimation,child){
-                      return FadeTransition(
-                      child:child,
-                      opacity:animation
-                      );
-              }
-                ),
-              );
+              Get.to(Email(isSignIn: false),transition: Transition.fade);
+                
             },
           ),
 
@@ -108,18 +98,7 @@ class _LaunchPageState extends State<LaunchPage> {
               Text("Already have an account?"),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                        pageBuilder: (context,animation,secondaryAnimation) => LoginPage(),
-                        transitionsBuilder:(context,animation,secondaryAnimation,child){
-                          return FadeTransition(
-                              child:child,
-                              opacity:animation
-                          );
-                        }
-                    ),
-                  );
+                  Get.to(LoginPage(),transition: Transition.fade);
                 },
                 child: Text(
                   "Sign In",

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:matrimony_flutter/AnimatedLoader.dart';
 import 'package:matrimony_flutter/Authentication/user_controllers.dart';
 import 'package:matrimony_flutter/Home/home.dart';
 import 'package:matrimony_flutter/Userform/Submit_Pages/Hobbies.dart';
@@ -25,7 +26,7 @@ class _CompleteProfileDetailTreeState extends State<CompleteProfileDetailTree> {
         future: userOperations.checkUnfillDetail(email: widget.email),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: AnimatedLoader());
           } else if (snapshot.hasData) {
             String data = snapshot.data!;
 

@@ -1,21 +1,16 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:matrimony_flutter/Authentication/widget_tree.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 
-
 class Email extends StatefulWidget {
-
   bool isSignIn;
   Email({super.key, required this.isSignIn});
 
   @override
   State<Email> createState() => _EmailState();
-
 }
 
 class _EmailState extends State<Email> {
-
   //utils
   final GlobalKey<FormState> _formkeyOfEmail = GlobalKey();
   bool? isUserExist;
@@ -32,19 +27,7 @@ class _EmailState extends State<Email> {
         password: passwordController.text,
       );
 
-      Navigator.push(
-          context,
-          PageRouteBuilder(
-              pageBuilder: (context,animation,secondaryAnimation) => VerifyEmailAddress(),
-              transitionsBuilder:(context,animation,secondaryAnimation,child){
-                return FadeTransition(
-                    child:child,
-                    opacity:animation
-                );
-              }
-          )
-      );
-
+      Get.offAll(VerifyEmailAddress(), transition: Transition.fade);
     } on FirebaseAuthException catch (e) {
       String err = '';
       switch (e.code) {
@@ -78,30 +61,14 @@ class _EmailState extends State<Email> {
     }
   }
 
-  Future<void> signin() async{
+  void signin()  {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("email", emailController.text);
-      prefs.setString("password", passwordController.text);
-
-      await Auth().signIn(
+      Auth().signIn(
         email: emailController.text,
         password: passwordController.text,
       );
 
-      Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-              pageBuilder: (context,animation,secondaryAnimation) => WidgetTree(),
-              transitionsBuilder:(context,animation,secondaryAnimation,child){
-                return FadeTransition(
-                    child:child,
-                    opacity:animation
-                );
-              }
-          )
-      );
-
+      Get.offAll(WidgetTree(), transition: Transition.fade);
     } on FirebaseAuthException catch (e) {
       String err = '';
       switch (e.code) {
@@ -139,7 +106,7 @@ class _EmailState extends State<Email> {
   Widget build(BuildContext context) {
     return SafeArea(
       bottom: true,
-      top :false,
+      top: false,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
@@ -149,7 +116,10 @@ class _EmailState extends State<Email> {
               children: [
                 const SizedBox(height: 150),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 20,
+                  ),
                   child: ListTile(
                     title: Text(
                       "My Email",
@@ -191,58 +161,49 @@ class _EmailState extends State<Email> {
                         });
                       },
                       icon:
-                      ishidePass! ? Icon(Iconsax.eye_slash) : Icon(Iconsax.eye),
+                          ishidePass!
+                              ? Icon(Iconsax.eye_slash)
+                              : Icon(Iconsax.eye),
                     ),
                     validateFun: validatePassword,
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(height: 20),
                 buildButton(
                   label: "Next",
                   textColor: Colors.white,
                   backgroundColor: Colors.purple,
                   icon: Icon(Iconsax.next, color: Colors.white),
-                  onPressed: () async {
+                  onPressed: () {
                     if (_formkeyOfEmail.currentState!.validate()) {
                       if (widget.isSignIn) {
-                        await signin();
+                         signin();
                       } else {
-                        await signup();
+                         signup();
                       }
                     }
                   },
                 ),
 
-                SizedBox(height: 20,),
+                SizedBox(height: 20),
 
-                if(!widget.isSignIn)
-                buildButton(
-                  label: "Sign up with Google",
-                  textColor: Colors.black,
-                  backgroundColor: Colors.white30,
-                  icon: Image.asset("assets/google_image.jpg", height: 20),
-                  borderColor: Colors.black,
-                  onPressed: () async {
-                    try {
-                        await Auth().signInWithGoogle();
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                              pageBuilder: (context,animation,secondaryAnimation) => WidgetTree(),
-                              transitionsBuilder:(context,animation,secondaryAnimation,child){
-                                return FadeTransition(
-                                    child:child,
-                                    opacity:animation
-                                );
-                              }
-                          ),
-                        );
-
-                    } catch (err) {
-                      print(err);
-                    }
-                  },
-                ),
+                if (!widget.isSignIn)
+                  buildButton(
+                    label: "Sign up with Google",
+                    textColor: Colors.black,
+                    backgroundColor: Colors.white30,
+                    icon: Image.asset("assets/google_image.jpg", height: 20),
+                    borderColor: Colors.black,
+                    onPressed: () async {
+                      try {
+                      await Auth().signInWithGoogle();
+                        
+                      Get.offAll(WidgetTree(),transition: Transition.fade);
+                      } catch (err) {
+                        print(err);
+                      }
+                    },
+                  ),
               ],
             ),
           ),

@@ -4,7 +4,7 @@ import 'package:matrimony_flutter/Utils/importFiles.dart';
 
 class UserOperations {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-
+  String? docId;
   Future<void> createUser({required UserModel data}) async {
 
     if(data.toJson()[EMAIL]!=null){
@@ -29,7 +29,7 @@ class UserOperations {
 
     if (query.docs.isNotEmpty) {
       // Get the first matching document
-      final docId = query.docs.first.id;
+      docId = query.docs.first.id;
       print("::::::::::::$docId");
       print("::::::::::::$updatedData");
       await FirebaseFirestore.instance
@@ -153,5 +153,26 @@ Future<List<Map<String,dynamic>>> getAllUsers() async {
       return [];
     }
   }
-  
+  Future<void> deleteAccountByEmail(email) async {
+    final query = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+
+    if (query.docs.isNotEmpty) {
+    // Grab the first matching document
+    final docSnap = query.docs.first;
+
+    // Extract its ID…
+    docId = docSnap.id;
+    // …and its data map
+    final data = docSnap.data();
+
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(docId)
+    .delete();
+    }
+  }
+
 }

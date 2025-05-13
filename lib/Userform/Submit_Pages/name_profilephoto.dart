@@ -167,31 +167,12 @@ class _NameProfilephotoState extends State<NameProfilephoto> {
                   icon: Icon(Iconsax.next, color: Colors.white),
                   onPressed: () async {
                     if (_name_profile.currentState!.validate()) {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-
+                      SharedPreferences prefs = Get.find<SharedPreferences>();
                       UserModel userModel = UserModel(FULLNAME: fullnameController.text,DOB: dobController.text,PROFILEPHOTO: imgUrl );
                       UserOperations userOperations = UserOperations();
                       userOperations.updateUserByEmail(email: prefs.getString("email").toString(), updatedData: userModel.toJson());
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  Gender(),
-                          transitionsBuilder: (
-                            context,
-                            animation,
-                            secondaryAnimation,
-                            child,
-                          ) {
-                            return FadeTransition(
-                              child: child,
-                              opacity: animation,
-                            );
-                          },
-                        ),
-                      );
+                     
+                      Get.to(Gender(),transition: Transition.fade);
                     }
                   },
                 ),

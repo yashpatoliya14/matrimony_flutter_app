@@ -106,24 +106,14 @@ class _CityState extends State<City> {
                   icon: Icon(Iconsax.next, color: Colors.white),
                   onPressed: () async {
                     SharedPreferences prefs =
-                    await SharedPreferences.getInstance();
+                    Get.find<SharedPreferences>();
 
                     UserModel userModel = UserModel(CITY: selectedCity!);
                     UserOperations userOperations = UserOperations();
                     userOperations.updateUserByEmail(email: prefs.getString("email").toString(), updatedData: userModel.toJson());
 
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                          pageBuilder: (context,animation,secondaryAnimation) => Hobbies(),
-                          transitionsBuilder:(context,animation,secondaryAnimation,child){
-                            return FadeTransition(
-                                child:child,
-                                opacity:animation
-                            );
-                          }
-                      ),
-                    );
+                                          Get.to(Hobbies(),transition: Transition.fade);
+
                   },
                 ),
               ],

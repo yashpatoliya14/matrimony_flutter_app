@@ -4,7 +4,7 @@ import 'package:matrimony_flutter/Utils/importFiles.dart';
 int activeIndex = 0;
 bool isSearchBar = false;
 
-Widget getAppBar(context, {onClickSearchBar,name,actionsList}){
+Widget getAppBar(context, {onClickSearchBar,name,actionsList,isDrawer=true}){
   final List<Color> appBarGradientColors = [Colors.purple.shade400, Colors.purple];
 
   return AppBar(
@@ -17,14 +17,15 @@ Widget getAppBar(context, {onClickSearchBar,name,actionsList}){
         ),
       ),
     ),
-    leading: Builder(
+    
+    leading:isDrawer? Builder(
       builder: (context) => IconButton(
         icon: Icon(FontAwesomeIcons.stream,color: Colors.white70,), // <-- Change this to any icon you want
         onPressed: () {
           Scaffold.of(context).openDrawer();
         },
       ),
-    ),
+    ):null,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         bottomLeft: Radius.circular(15),

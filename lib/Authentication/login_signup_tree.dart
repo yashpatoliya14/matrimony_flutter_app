@@ -75,18 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                 textColor: Colors.white,
                 backgroundColor: Colors.purple,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                      PageRouteBuilder(
-                          pageBuilder: (context,animation,secondaryAnimation) => Email(isSignIn: true),
-                          transitionsBuilder:(context,animation,secondaryAnimation,child){
-                            return FadeTransition(
-                                child:child,
-                                opacity:animation
-                            );
-                          }
-                      )
-                  );
+                 Get.to(Email(isSignIn: true),transition: Transition.fade);
                 },
               ),
               SizedBox(height: 20),
@@ -132,18 +121,8 @@ class _LoginPageState extends State<LoginPage> {
                   try {
                     await Auth().signInWithGoogle();
 
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                          pageBuilder: (context,animation,secondaryAnimation) => WidgetTree(),
-                          transitionsBuilder:(context,animation,secondaryAnimation,child){
-                            return FadeTransition(
-                                child:child,
-                                opacity:animation
-                            );
-                          }
-                      ),
-                    );
+                    
+                  Get.offAll(WidgetTree(),transition: Transition.fade);
                   } catch (err) {
                     print(err);
                   }

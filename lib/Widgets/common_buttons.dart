@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Widget buildButton({
   required label,
@@ -10,7 +11,7 @@ Widget buildButton({
 }) {
   return OutlinedButton.icon(
     onPressed: onPressed,
-    label: Text(label,style: TextStyle(color: textColor),),
+    label: Text(label,style: GoogleFonts.nunito(color: textColor),),
     icon: icon,
     
     style: OutlinedButton.styleFrom(

@@ -137,17 +137,8 @@ class _NameProfilephotoState extends State<Gender> {
                     UserOperations userOperations = UserOperations();
                     userOperations.updateUserByEmail(email: prefs.getString("email").toString(), updatedData: userModel.toJson());
 
-                    Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                            pageBuilder: (context,animation,secondaryAnimation) => City(),
-                            transitionsBuilder:(context,animation,secondaryAnimation,child){
-                              return FadeTransition(
-                                  child:child,
-                                  opacity:animation
-                              );
-                            }
-                        ));
+                                          Get.to(City(),transition: Transition.fade);
+
                   }
               ),
             ],

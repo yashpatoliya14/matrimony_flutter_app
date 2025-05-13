@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:matrimony_flutter/Home/app_bar.dart';
+import 'package:matrimony_flutter/Utils/importFiles.dart';
 
 
 
@@ -15,12 +16,6 @@ class _AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // AppBar with red-orange gradient
-      appBar: PreferredSize(
-         preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.08),
-        child: getAppBar(context,name: "About us")
-        ),
-        
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -136,21 +131,21 @@ class _AboutPageState extends State<AboutPage> {
             ),
             const SizedBox(height: 8),
             ListTile(
-              leading: const Icon(Icons.email),
-              title: const Text("aswdc@darshan.ac.in"),
+              leading: const Icon(Iconsax.message),
+              title: const Text("yashpatoliya14@gmail.com"),
               onTap: () {
                 // Implement email launch or other action
               },
             ),
             ListTile(
-              leading: const Icon(Icons.phone),
+              leading: const Icon(Iconsax.call),
               title: const Text("+91 70433 33359"),
               onTap: () {
                 // Implement phone call or other action
               },
             ),
             ListTile(
-              leading: const Icon(Icons.web),
+              leading: const Icon(Iconsax.link),
               title: const Text("http://www.darshan.ac.in"),
               onTap: () {
                 // Implement website navigation
@@ -158,31 +153,10 @@ class _AboutPageState extends State<AboutPage> {
             ),
             const Divider(),
             ListTile(
-              leading: const Icon(Icons.share),
-              title: const Text("Share App"),
+              leading: const Icon(Iconsax.mobile),
+              title: const Text("1.0.0 version"),
               onTap: () {
                 // Implement share functionality
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.star_rate),
-              title: const Text("Rate App"),
-              onTap: () {
-                // Implement rate functionality
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.apps),
-              title: const Text("More Apps"),
-              onTap: () {
-                // Show other apps
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.privacy_tip),
-              title: const Text("Privacy Policy"),
-              onTap: () {
-                // Show privacy policy
               },
             ),
             const SizedBox(height: 16),

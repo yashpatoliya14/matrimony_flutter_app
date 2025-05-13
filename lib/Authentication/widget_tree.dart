@@ -1,3 +1,4 @@
+import 'package:matrimony_flutter/AnimatedLoader.dart';
 import 'package:matrimony_flutter/Authentication/complete_profile_detail_tree.dart';
 import 'package:matrimony_flutter/Authentication/user_controllers.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
@@ -22,9 +23,8 @@ class _WidgetTreeState extends State<WidgetTree> {
             return FutureBuilder<bool?>(
               future: UserOperations().isProfileDetails(email: email),
               builder: (context, profileSnapshot) {
-                print("::::::::::::::**${profileSnapshot.data}");
                 if (profileSnapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(child: AnimatedLoader());
                 } else if (profileSnapshot.hasData) {
                   if(profileSnapshot.data!){
                     return Home();

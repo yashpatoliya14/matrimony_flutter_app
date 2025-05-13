@@ -54,4 +54,21 @@ class ChatService {
       .orderBy('timestamp', descending: true)
       .snapshots();
   }
+  Future<void> deleteMessages(String receiverId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    UserOperations userOperations = UserOperations();
+    final userData =await userOperations.getUserByEmail(email: prefs.getString(EMAIL).toString());
+    final userId = userData![ID];
+    final chatId = getChatId(userId, receiverId);
+    final chatRef = FirebaseFirestore.instance
+      .collection('messages')
+      .doc(chatId)
+      .collection('chats');
+
+    final snapshot = await chatRef.get();
+
+    for (var doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
 }

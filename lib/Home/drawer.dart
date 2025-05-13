@@ -13,20 +13,65 @@ class getDrawer extends StatefulWidget {
 }
 
 class _getDrawerState extends State<getDrawer> {
-  
-  Map<String, dynamic>? userDetail ;
+
+  void onEdit(){
+    Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder:
+                          (context, animation, secondAnimation) =>
+                              UserForm(userDetail: userDetail!, isAppBar: true),
+                      transitionsBuilder: (
+                        context,
+                        animation,
+                        secondAnimation,
+                        child,
+                      ) {
+                        return FadeTransition(child: child, opacity: animation);
+                      },
+                    ),
+                  ).then((value) {
+                    setState(() {
+                      _getProfileDetails();
+                    });
+                  });
+  }
+
+  void onView(){
+Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder:
+                          (context, animation, secondAnimation) =>
+                              UserDetail(data: userDetail!),
+                      transitionsBuilder: (
+                        context,
+                        animation,
+                        secondAnimation,
+                        child,
+                      ) {
+                        return FadeTransition(child: child, opacity: animation);
+                      },
+                    ),
+                  );
+  }
+
+
+  Map<String, dynamic>? userDetail;
   Future<Map<String, dynamic>?> _getProfileDetails() async {
-    UserOperations userOperations =  UserOperations();
-    SharedPreferences prefs =await SharedPreferences.getInstance();
-    return userOperations.getUserByEmail(email: prefs.getString(EMAIL).toString());
+    UserOperations userOperations = UserOperations();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return userOperations.getUserByEmail(
+      email: prefs.getString(EMAIL).toString(),
+    );
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _getProfileDetails();
   }
-  
+
   Future<void> signOut() async {
     await Auth().signOut();
 
@@ -39,97 +84,92 @@ class _getDrawerState extends State<getDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-          width: 300,
-          child: FutureBuilder<Map<String, dynamic>?>(
-            future: _getProfileDetails(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error loading profile'));
-              } else if (!snapshot.hasData || snapshot.data == null) {
-                return Center(child: Text('Profile not found'));
-              }
+      width: 300,
+      child: FutureBuilder<Map<String, dynamic>?>(
+        future: _getProfileDetails(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error loading profile'));
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return Center(child: Text('Profile not found'));
+          }
 
-              final profileData = snapshot.data!;
-              userDetail = profileData;
-              return ListView(
-                padding: EdgeInsets.all(16),
+          final profileData = snapshot.data!;
+          userDetail = profileData;
+          return ListView(
+            padding: EdgeInsets.all(16),
+            children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(
+                  profileData[PROFILEPHOTO] ?? "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg",
+                ),
+                backgroundColor: Colors.grey[200]),
+              SizedBox(height: 10),
+              Text(
+                profileData['name'] ?? 'No Name',
+                style: GoogleFonts.raleway(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(
-                      profileData['profilePhoto'] ?? '',
-                      scale: 1
-                    ),
-                    backgroundColor: Colors.grey[200],
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    profileData['name'] ?? 'No Name',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 20),
-                  ListTile(
-                    title: Text("Email"),
-                    subtitle: Text(profileData[EMAIL].toString()),
-                  ),
-                  buildButton(
-                    label: "Sign out",
-                    textColor: Colors.white,
-                    backgroundColor: Colors.purple,
-                    onPressed: () {
-                      signOut();
-                    },
-                  ),
-                  SizedBox(height: 15),
-                  buildButton(
-                    label: "Edit Profile",
-                    textColor: Colors.white,
-                    backgroundColor: Colors.purple.shade200,
-                    onPressed: (){
-                      Navigator.push(context,
-                      PageRouteBuilder(
-                        pageBuilder: (context,animation,secondAnimation)=>UserForm(userDetail: userDetail!,isAppBar: true,),
-                        transitionsBuilder: (context,animation,secondAnimation,child){
-                          return FadeTransition(
-                            child:child,
-                            opacity:animation
-                            );
-                        }
-                        )
-                        
-                        ).then((value){
-                            setState(() {
-                              _getProfileDetails();
-                            });
-                        });
-                    }
-                  ),
-                  SizedBox(height: 15),
-                  buildButton(
-                    label: "View Profile",
-                    textColor: Colors.white,
-                    backgroundColor: Colors.purple.shade200,
-                    onPressed: (){
-                      Navigator.push(context,
-                      PageRouteBuilder(
-                        pageBuilder: (context,animation,secondAnimation)=>UserDetail(data: userDetail!),
-                        transitionsBuilder: (context,animation,secondAnimation,child){
-                          return FadeTransition(
-                            child:child,
-                            opacity:animation
-                            );
-                        }
-                        )
-                        
-                        );
-                    }
-                  ),
-                ],
-              );
-            },
-          ),
-        );
+                InkWell(child: Column(
+                  children: [
+                    Icon(Iconsax.edit),
+                    Text("Edit",style: GoogleFonts.nunito(),)
+                  ],
+                ),
+                onTap: (){
+                  onEdit();
+                },
+                ),
+                SizedBox(width: 15,),
+                InkWell(child: Column(
+                  children: [
+                    Icon(Iconsax.eye),
+                    Text("View",style: GoogleFonts.nunito(),)
+                    
+                  ],
+                ),
+                onTap: () {
+                  onView();
+                },
+                )
+                ]),
+              SizedBox(height: 20),
+
+              TextButton.icon(icon: Icon(Iconsax.logout),label: Text("Sign out",style: GoogleFonts.nunito(),),onPressed: (){
+                signOut();    
+              },),
+
+              SizedBox(height: 20),
+              ListTile(
+                title: Row(
+                  children: [
+                    Text("Email", style: GoogleFonts.nunito()),
+                    SizedBox(width: 2),
+                    Icon(Iconsax.message, size: 15),
+                  ],
+                ),
+                subtitle: Text(
+                  profileData[EMAIL].toString(),
+                  style: GoogleFonts.quicksand(fontWeight: FontWeight.w500),
+                ),
+              ),
+              SizedBox(height: 15),
+              
+              
+            ],
+          );
+        },
+      ),
+    );
   }
 }

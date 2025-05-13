@@ -1,6 +1,6 @@
+import 'package:matrimony_flutter/Authentication/complete_profile_detail_tree.dart';
 import 'package:matrimony_flutter/Authentication/user_controllers.dart';
 import 'package:matrimony_flutter/Authentication/user_model.dart';
-import 'package:matrimony_flutter/Userform/Submit_Pages/mobile.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 
 class Hobbies extends StatefulWidget {
@@ -85,31 +85,21 @@ class _HobbiesState extends State<Hobbies> {
                 textColor: Colors.white,
                 backgroundColor: Colors.purple,
                 icon: Icon(Iconsax.next, color: Colors.white),
-                onPressed: () async {
+                onPressed: () {
                   selectedHobbies =
                       hobbiesData
                           .where((hobby) => hobby["isChecked"])
                           .map((hobby) => hobby["name"] as String)
                           .toList();
                   SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-
+                  Get.find<SharedPreferences>();
+                  final userEmail = prefs.getString(EMAIL).toString();
                   UserModel userModel = UserModel(HOBBIES: selectedHobbies!);
                   UserOperations userOperations = UserOperations();
-                  userOperations.updateUserByEmail(email: prefs.getString(EMAIL).toString(), updatedData: userModel.toJson());
+                  userOperations.updateUserByEmail(email:userEmail, updatedData: userModel.toJson());
 
-                  Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                        pageBuilder: (context,animation,secondaryAnimation) => Home(),
-                        transitionsBuilder:(context,animation,secondaryAnimation,child){
-                          return FadeTransition(
-                              child:child,
-                              opacity:animation
-                          );
-                        }
-                    ),
-                  );
+                                        Get.offAll(CompleteProfileDetailTree(email: userEmail,),transition: Transition.fade);
+
                 },
               ),
             ],

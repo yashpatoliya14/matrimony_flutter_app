@@ -17,14 +17,23 @@ class _UserDetailState extends State<UserDetail> {
   void initState() {
     super.initState();
   }
-  final List<Color> appBarGradientColors = [Colors.red, Colors.purple.shade300];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:PreferredSize(
-          preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.08),
-          child: getAppBar(context,name: "Matrimony")),
+      appBar:AppBar(
+        backgroundColor: Colors.purple,
+    
+    title: Text(
+      "Profile details",
+      style: GoogleFonts.nunito(
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+        fontSize: 25,
+      ),
+    ),
+      ),
+
       // Background gradient
       body: Container(
 

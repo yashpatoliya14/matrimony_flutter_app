@@ -61,6 +61,7 @@ dependencies:
   google_sign_in:
   iconic: ^0.1.0
   flutter_image_compress:
+  connectivity_plus: 
 dev_dependencies:
   flutter_test:
     sdk: flutter
