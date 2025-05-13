@@ -75,10 +75,7 @@ Navigator.push(
   Future<void> signOut() async {
     await Auth().signOut();
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LaunchPage()),
-    );
+    Get.offAll(LaunchPage(),transition: Transition.fade);
   }
 
   @override
