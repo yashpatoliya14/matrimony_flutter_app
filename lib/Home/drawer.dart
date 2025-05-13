@@ -85,6 +85,7 @@ class _getDrawerState extends State<getDrawer> {
   width: 100,
   height: 100,
   child: CircleAvatar(
+    backgroundColor: Colors.transparent,
     child: Image.network(
       profileData[PROFILEPHOTO] ??
           "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg",

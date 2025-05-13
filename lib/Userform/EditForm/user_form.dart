@@ -1,8 +1,17 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:matrimony_flutter/Authentication/user_controllers.dart';
 import 'package:matrimony_flutter/Authentication/user_model.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 class UserForm extends StatefulWidget {
   bool isAppBar;
   Map<String, dynamic>? userDetail;
@@ -15,13 +24,38 @@ class UserForm extends StatefulWidget {
 
 class _UserformState extends State<UserForm> {
   final GlobalKey<FormState> _formkey = GlobalKey();
-  //get userHobbies when user editable mode
-  // Future<List<String>> getUserHobbies(widget,user) async {
-  //   if (widget.userDetail != null) {
-  //     return await user.getUserHobbies(userId: int.parse(widget.userDetail![ID]));
-  //   }
-  //   return [];
-  // }
+  
+  Future<bool> requestMediaPermission() async {
+    var status = await Permission.photos.request();
+    return status.isGranted;
+  }
+  Future<String?> uploadImageToCloudinary(File imageFile) async {
+    const cloudName = 'dpplqlawt';
+    const uploadPreset = 'soulmate_hub';
+
+    final url = Uri.parse('https://api.cloudinary.com/v1_1/$cloudName/image/upload');
+
+    final mimeType = lookupMimeType(imageFile.path);
+    final request = http.MultipartRequest('POST', url)
+      ..fields['upload_preset'] = uploadPreset
+      ..files.add(await http.MultipartFile.fromPath(
+        'file',
+        imageFile.path,
+        contentType: mimeType != null ? MediaType.parse(mimeType) : null,
+      ));
+
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      final resStr = await response.stream.bytesToString();
+      final resJson = jsonDecode(resStr);
+      return resJson['secure_url']; // This is the Cloudinary image URL
+    } else {
+      print('Cloudinary upload failed: ${response.statusCode}');
+      return null;
+    }
+  }
+    String? imgUrl ;
 
   void checkedHobbies(map,value){
     setState(() {
@@ -36,7 +70,7 @@ class _UserformState extends State<UserForm> {
 
     //if user editable mode then assign values to the controller text
     if (widget.userDetail != null) {
-
+      imgUrl = widget.userDetail?[PROFILEPHOTO] ?? ''; 
       fullnameController.text = widget.userDetail?[FULLNAME] ?? '';
       emailController.text = widget.userDetail?[EMAIL] ?? '';
       passwordController.text = widget.userDetail?[PASSWORD] ?? '';
@@ -53,16 +87,6 @@ class _UserformState extends State<UserForm> {
         for (var hobby in hobbiesData) {
           hobby["isChecked"] = selectedHobbies!.contains(hobby["name"]);
         }
-      // getUserHobbies(widget,user).then((fetchedHobbies) {
-      //   print("Fetched hobbies: $fetchedHobbies");
-      //   setState(() {
-      //     selectedHobbies = fetchedHobbies;
-      //     for (var hobby in hobbiesData) {
-      //       hobby["isChecked"] = selectedHobbies!.contains(hobby["name"]);
-      //       print("Hobby ${hobby["name"]} isChecked: ${hobby["isChecked"]}");
-      //     }
-      //   });
-      // });
 
 
       isFavorite = widget.userDetail![ISFAVORITE];
@@ -102,6 +126,39 @@ class _UserformState extends State<UserForm> {
               child: ListView(
 
                 children: [
+                  CircleAvatar(
+                  backgroundColor: Colors.grey,
+                  backgroundImage: NetworkImage(imgUrl ?? "",scale: 1),
+                  radius: 75,
+                ),
+                SizedBox(height: screenWidth * 0.1),
+                  buildButton(
+                  label: imgUrl !=null ? "Re-upload":"Upload",
+                  textColor: Colors.white,
+                  backgroundColor: Colors.purple,
+                  onPressed: ()async{
+                    final picker = ImagePicker();
+                    bool granted = await requestMediaPermission();
+                    if (!granted) {
+                      print("Permission not granted");
+                      return;
+                    }
+                    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+                    if (pickedFile != null) {
+                      final file = File(pickedFile.path);
+                      final imageUrl = await uploadImageToCloudinary(file);
+
+                      if (imageUrl != null) {
+                        print('Image uploaded to: $imageUrl');
+                        setState(() {
+                          imgUrl = imageUrl;
+                        });
+                      }
+                    }
+                  }
+                ),
+                SizedBox(height: screenWidth * 0.1),
 
                   //fullname
                   Container(
@@ -423,6 +480,7 @@ class _UserformState extends State<UserForm> {
                               GENDER: gender[selectedRadio!],
                               CITY: selectedCity,
                               HOBBIES: selectedHobbies,
+                              PROFILEPHOTO: imgUrl
                               );
                               UserOperations userOperations = UserOperations();
                               await userOperations.updateUserByEmail(updatedData:userModel.toJson() , email: widget.userDetail![EMAIL])
