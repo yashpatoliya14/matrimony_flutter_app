@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:matrimony_flutter/Authentication/user_controllers.dart';
 import 'package:matrimony_flutter/User_Detail/user_detail.dart';
 import 'package:matrimony_flutter/Userform/EditForm/user_form.dart';
+import 'package:matrimony_flutter/Userform/Submit_Pages/Hobbies.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:matrimony_flutter/launch_page.dart';
 
@@ -37,24 +38,6 @@ class _getDrawerState extends State<getDrawer> {
                   });
   }
 
-  void onView(){
-Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder:
-                          (context, animation, secondAnimation) =>
-                              UserDetail(data: userDetail!),
-                      transitionsBuilder: (
-                        context,
-                        animation,
-                        secondAnimation,
-                        child,
-                      ) {
-                        return FadeTransition(child: child, opacity: animation);
-                      },
-                    ),
-                  );
-  }
 
 
   Map<String, dynamic>? userDetail;
@@ -98,12 +81,20 @@ Navigator.push(
           return ListView(
             padding: EdgeInsets.all(16),
             children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(
-                  profileData[PROFILEPHOTO] ?? "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg",
-                ),
-                backgroundColor: Colors.grey[200]),
+             SizedBox(
+  width: 100,
+  height: 100,
+  child: CircleAvatar(
+    child: Image.network(
+      profileData[PROFILEPHOTO] ??
+          "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg",
+      fit: BoxFit.cover, // Ensures it fills the circle correctly
+      errorBuilder: (context, error, stackTrace) =>
+          Icon(Icons.person, size: 50, color: Colors.grey),
+    ),
+  ),
+),
+
               SizedBox(height: 10),
               Text(
                 profileData['name'] ?? 'No Name',
@@ -127,18 +118,7 @@ Navigator.push(
                   onEdit();
                 },
                 ),
-                SizedBox(width: 15,),
-                InkWell(child: Column(
-                  children: [
-                    Icon(Iconsax.eye),
-                    Text("View",style: GoogleFonts.nunito(),)
-                    
-                  ],
-                ),
-                onTap: () {
-                  onView();
-                },
-                )
+                
                 ]),
               SizedBox(height: 20),
 
@@ -161,6 +141,61 @@ Navigator.push(
                 ),
               ),
               SizedBox(height: 15),
+              ListTile(
+                title: Row(
+                  children: [
+                    Text("Gender", style: GoogleFonts.nunito()),
+                    SizedBox(width: 2),
+                    Icon(profileData[GENDER].toString() == "Male" ? Iconsax.man :Iconsax.woman , size: 15),
+                  ],
+                ),
+                subtitle: Text(
+                  profileData[GENDER].toString(),
+                  style: GoogleFonts.quicksand(fontWeight: FontWeight.w500),
+                ),
+              ),
+              SizedBox(height: 15),
+              ListTile(
+                title: Row(
+                  children: [
+                    Text("City", style: GoogleFonts.nunito()),
+                    SizedBox(width: 2),
+                    Icon( Iconsax.building, size: 15),
+                  ],
+                ),
+                subtitle: Text(
+                  profileData[CITY].toString(),
+                  style: GoogleFonts.quicksand(fontWeight: FontWeight.w500),
+                ),
+              ),
+              SizedBox(height: 15),
+              ListTile(
+                title: Row(
+                  children: [
+                    Text("Hobbies", style: GoogleFonts.nunito()),
+                    SizedBox(width: 2),
+                    Icon( Iconsax.note_favorite, size: 15),
+                  ],
+                ),
+                subtitle: Text(
+                  profileData[HOBBIES].join(", "),
+                  style: GoogleFonts.quicksand(fontWeight: FontWeight.w500),
+                ),
+              ),
+              SizedBox(height: 15),
+              ListTile(
+                title: Row(
+                  children: [
+                    Text("Date of birth", style: GoogleFonts.nunito()),
+                    SizedBox(width: 2),
+                    Icon( Iconsax.calendar, size: 15),
+                  ],
+                ),
+                subtitle: Text(
+                  profileData[DOB],
+                  style: GoogleFonts.quicksand(fontWeight: FontWeight.w500),
+                ),
+              ),
               
               
             ],

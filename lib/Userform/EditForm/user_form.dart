@@ -49,7 +49,7 @@ class _UserformState extends State<UserForm> {
           int.parse(db[1]),
           int.parse(db[0])
       );
-      selectedHobbies = List<String>.from(widget.userDetail![HOBBY] ?? []);;
+      selectedHobbies = List<String>.from(widget.userDetail![HOBBIES] ?? []);;
         for (var hobby in hobbiesData) {
           hobby["isChecked"] = selectedHobbies!.contains(hobby["name"]);
         }

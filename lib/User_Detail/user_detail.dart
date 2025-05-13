@@ -83,7 +83,7 @@ class _UserDetailState extends State<UserDetail> {
                                 "Gender",
                                 widget.data[GENDER] ?? 'N/A',
                               ),
-                              _buildUserInfo(Icons.sports, "Hobbies",  widget.data[HOBBY]!=null ? widget.data[HOBBY].join(", ") : 'N/A'),
+                              _buildUserInfo(Icons.sports, "Hobbies",  widget.data[HOBBIES]!=null ? widget.data[HOBBIES].join(", ") : 'N/A'),
                             ],
                           ),
                         ),
