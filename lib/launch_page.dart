@@ -42,6 +42,7 @@ class _LaunchPageState extends State<LaunchPage> {
     return Scaffold(
       appBar: PreferredSize(preferredSize: Size(10, 40), child: AppBar()),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CarouselSlider(
             options: CarouselOptions(

@@ -2,16 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:matrimony_flutter/Authentication/widget_tree.dart';
+import 'package:matrimony_flutter/Home/drawer_provider.dart';
+import 'package:matrimony_flutter/Home/user_list.dart';
+import 'package:matrimony_flutter/Home/userlist_provider.dart';
 import 'package:matrimony_flutter/Network_wrapper.dart';
 import 'package:matrimony_flutter/Utils/importFiles.dart';
 import 'package:matrimony_flutter/launch_page.dart';
-import 'firebase_options.dart'; 
+import 'package:provider/provider.dart';
+import 'firebase_options.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   Get.put<SharedPreferences>(prefs); // Store it globally in GetX
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
-  runApp(const MyApp());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  runApp(
+      MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_)=>UserListProvider()),
+            ChangeNotifierProvider(create: (_)=>DrawerProvider()),
+          ],
+          child: const MyApp()
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -41,7 +55,7 @@ class MyApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        splashColor: Colors.transparent
+        splashColor: Colors.transparent,
       ),
       home: NetworkWrapper(child: WidgetTree()),
     );

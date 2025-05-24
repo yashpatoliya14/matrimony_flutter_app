@@ -43,17 +43,11 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-          MediaQuery.of(context).size.height * 0.08,
-        ),
-
-        child: AppBar(),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //logo
               Image.asset("assets/login_signup_tree1.png", width: 100),
